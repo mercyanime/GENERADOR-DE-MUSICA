@@ -1,0 +1,198 @@
+from flask import Flask, render_template_string, jsonify, send_from_directory
+import random
+import os
+
+app = Flask(__name__)
+
+# ---------------------- CONFIGURACIÓN ----------------------
+CARPETA_BEATS = os.path.join("static", "beats")
+
+# 📚 MÁS DE 1100 PALABRAS FÁCILES PARA RIMAR
+PALABRAS_BASE = [
+    # ACCIONES
+    "hacer", "decir", "ir", "ver", "dar", "saber", "querer", "llegar", "pasar", "deber",
+    "poner", "parecer", "quedar", "resultar", "hablar", "llevar", "dejar", "seguir", "encontrar", "llamar",
+    "trabajar", "vivir", "sentir", "intentar", "conseguir", "comenzar", "terminar", "servir", "saltar", "correr",
+    "caminar", "bailar", "cantar", "reír", "llorar", "soñar", "pensar", "creer", "dudar", "esperar",
+    "luchar", "pelear", "ganar", "perder", "subir", "bajar", "entrar", "salir", "abrir", "cerrar",
+    "romper", "arreglar", "crear", "destruir", "ayudar", "apoyar", "defender", "atacar", "escapar", "quedar",
+    "mirar", "escuchar", "leer", "escribir", "aprender", "enseñar", "jugar", "descansar", "comer", "beber",
+    "dormir", "despertar", "levantar", "caer", "volar", "nadar", "conducir", "manejar", "empujar", "tirar",
+    "agarrar", "soltar", "sostener", "mover", "marcharse", "regresar", "volver", "partir", "buscar", "olvidar",
+    "recordar", "imaginar", "razonar", "gustar", "odiar", "amar", "odiar", "aceptar", "rechazar", "invitar",
+    "visitar", "viajar", "parar", "arrancar", "frenar", "acelerar", "girar", "doblar", "cruzar", "atravesar",
+    "saltar", "brincar", "trepar", "escalar", "bajar", "descender", "ascender", "lanzar", "recoger", "guardar",
+    "sacar", "meter", "traer", "llevar", "enviar", "recibir", "comprar", "vender", "pagar", "cobrar",
+    "prestar", "pedir", "donar", "regalar", "tomar", "usar", "utilizar", "probar", "ensayar", "practicar",
+    "estudiar", "repasar", "explicar", "contar", "narrar", "relatar", "decir", "mencionar", "nombrar", "llamar",
+
+    # OBJETOS Y LUGARES
+    "luz", "sol", "luna", "estrella", "cielo", "nube", "lluvia", "viento", "fuego", "tierra",
+    "agua", "mar", "río", "lago", "montaña", "valle", "bosque", "camino", "puente", "calle",
+    "casa", "puerta", "ventana", "techo", "suelo", "pared", "silla", "mesa", "cama", "libro",
+    "papel", "pluma", "lápiz", "hoja", "dinero", "oro", "plata", "cobre", "piedra", "arena",
+    "flor", "árbol", "fruto", "semilla", "raíz", "rama", "pájaro", "pez", "animal", "perro",
+    "gato", "caballo", "león", "oso", "lobo", "águila", "serpiente", "tigre", "vaca", "cerdo",
+    "oveja", "gallina", "pato", "abeja", "hormiga", "mosca", "araña", "ratón", "conejo", "zorro",
+    "espada", "escudo", "casco", "flecha", "arco", "lanza", "cuchillo", "botella", "vaso", "taza",
+    "ropa", "zapato", "sombrero", "camisa", "pantalón", "abrigo", "guante", "mochila", "bolsa", "caja",
+    "llave", "cerrojo", "candado", "cadena", "cuerda", "nudo", "red", "malla", "barco", "coche",
+    "avión", "tren", "bicicleta", "rueda", "motor", "llanta", "faro", "lámpara", "hoguera", "linterna",
+    "pueblo", "ciudad", "país", "mundo", "planeta", "universo", "callejón", "plaza", "parque", "jardín",
+    "escuela", "colegio", "universidad", "hospital", "iglesia", "templo", "castillo", "torre", "muralla", "foso",
+    "techo", "piso", "escalera", "pasillo", "habitación", "salón", "cocina", "baño", "sótano", "ático",
+    "bolígrafo", "cuaderno", "goma", "regla", "tijera", "pegamento", "mochila", "carpeta", "libreta", "mapa",
+    "reloj", "calendario", "agenda", "teléfono", "celular", "computadora", "pantalla", "teclado", "ratón", "altavoz",
+
+    # SENTIMIENTOS Y CUALIDADES
+    "amor", "odio", "paz", "guerra", "alegría", "tristeza", "miedo", "valor", "fuerza", "debilidad",
+    "calor", "frío", "oscuro", "claro", "alto", "bajo", "largo", "corto", "ancho", "estrecho",
+    "rápido", "lento", "fácil", "difícil", "bueno", "malo", "grande", "pequeño", "nuevo", "viejo",
+    "joven", "adulto", "niño", "hombre", "mujer", "persona", "amigo", "enemigo", "familia", "hermano",
+    "madre", "padre", "hijo", "hija", "abuelo", "abuela", "tío", "tía", "primo", "prima",
+    "libre", "esclavo", "rico", "pobre", "feliz", "triste", "enojado", "calmado", "tímido", "valiente",
+    "sabio", "tonto", "inteligente", "loco", "cuerdo", "sano", "enfermo", "débil", "sueco", "bonito",
+    "feo", "lindo", "hermoso", "sucio", "limpio", "seco", "mojado", "duro", "blando", "pesado",
+    "ligero", "lleno", "vacío", "cerca", "lejos", "dentro", "fuera", "arriba", "abajo", "antes",
+    "después", "ahora", "siempre", "nunca", "mucho", "poco", "bastante", "nada", "todo", "algo",
+    "tranquilo", "nervioso", "ansioso", "seguro", "dudoso", "firme", "débil", "fuerte", "leal", "traidor",
+    "sincero", "falso", "veraz", "mentiroso", "humilde", "orgulloso", "generoso", "tacaño", "valiente", "cobarde",
+
+    # CONCEPTOS Y RIMAS FÁCILES
+    "vida", "muerte", "tiempo", "espacio", "momento", "año", "mes", "día", "hora", "minuto",
+    "segundo", "pasado", "presente", "futuro", "origen", "fin", "principio", "meta", "destino", "suerte",
+    "razón", "locura", "verdad", "mentira", "sueño", "realidad", "magia", "misterio", "secreto", "historia",
+    "leyenda", "mito", "cuento", "poema", "canto", "melodía", "ritmo", "sonido", "silencio", "voz",
+    "palabra", "frase", "verso", "rima", "estrofa", "coro", "fama", "gloria", "honor", "éxito",
+    "fracaso", "victoria", "derrota", "poder", "autoridad", "derecho", "deber", "justicia", "libertad", "unión",
+    "división", "unidad", "grupo", "equipo", "banda", "pueblo", "nación", "patria", "hogar", "rincón",
+    "esquina", "centro", "frontera", "límite", "muro", "barrera", "ruta", "viaje", "aventura", "batalla",
+    "acción", "pasión", "visión", "misión", "lección", "canción", "emoción", "corazón", "región", "religión",
+    "mentira", "herida", "partida", "llegada", "entrada", "salida", "caída", "subida", "huida", "medida",
+    "fuego", "juego", "luego", "ciego", "ruego", "nuevo", "lluevo", "apuego", "aruego", "fuego",
+    "dolor", "color", "valor", "error", "temor", "pavor", "sabor", "labor", "favor", "rigor",
+    "luz", "cruz", "voz", "vez", "pez", "mes", "tres", "diez", "juez", "fe",
+    "mar", "par", "estar", "lugar", "clar", "amar", "sanar", "ganar", "llorar", "orar",
+    "cielo", "suelo", "hielo", "desvelo", "modelo", "anhelo", "duelo", "consuelo", "revuelo", "velo",
+    "tierra", "guerra", "sierra", "feria", "miseria", "espera", "fiera", "era", "materia", "carrera",
+    "fuerza", "certeza", "belleza", "tristeza", "pereza", "riqueza", "pobreza", "dureza", "bajeza", "nobleza",
+    "camino", "divino", "vecino", "pino", "vino", "signo", "diseño", "ensueño", "tierno", "eterno",
+    "tempestad", "cicatriz", "frío", "rapto", "frenesí", "impulso", "brillo", "destello", "resplandor", "sombrío",
+
+    # MÁS PALABRAS SENCILLAS
+    "abajo", "acá", "allá", "allí", "alrededor", "apenas", "aquí", "atrás", "aún", "bien",
+    "casi", "cómo", "cuándo", "cuánto", "dónde", "mal", "más", "menos", "muy", "nunca",
+    "pronto", "siempre", "tanto", "temprano", "tarde", "ahí", "entonces", "mientras", "uno", "dos",
+    "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "primero", "segundo", "tercero", "cuarto",
+    "quinto", "sexto", "séptimo", "octavo", "noveno", "décimo", "blanco", "negro", "rojo", "azul",
+    "verde", "amarillo", "naranja", "morado", "gris", "marrón", "ante", "bajo", "con", "contra",
+    "desde", "entre", "hacia", "hasta", "para", "por", "según", "sin", "sobre", "tras",
+    "durante", "él", "ella", "ello", "nosotros", "vosotros", "ellos", "ellas", "tú", "yo",
+    "usted", "mío", "tuyo", "suyo", "nuestro", "vuestro", "propio", "ajeno", "mismo", "otro",
+    "tal", "demasiado", "igual", "medio", "suficiente", "nadie", "alguien", "quienquiera", "cualquiera", "cada",
+    "ambos", "ninguno", "alguno", "varios", "resto", "mitad", "parte", "todo", "nada", "alguien",
+    "encima", "debajo", "detrás", "delante", "enfrente", "cerca", "lejos", "junto", "separado", "unido"
+]
+
+# Cargar beats disponibles
+def obtener_beats():
+    os.makedirs(CARPETA_BEATS, exist_ok=True)
+    return [f for f in os.listdir(CARPETA_BEATS) if f.endswith(('.mp3','.wav'))]
+
+# ---------------------- PÁGINA PRINCIPAL ----------------------
+@app.route("/")
+def index():
+    return render_template_string("""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Generador de Rap con Beats</title>
+    <link rel="stylesheet" href="/static/estilo.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>🔥 ENTRENADOR DE FREESTYLE</h1>
+
+        <div class="seccion">
+            <h3>🎵 Elige tu Beat</h3>
+            <select id="listaBeats">
+                {% if beats %}
+                    {% for beat in beats %}
+                    <option value="{{ beat }}">{{ beat.replace('.mp3','').replace('.wav','') }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="">👉 Sube tus beats a static/beats</option>
+                {% endif %}
+            </select>
+            <br><br>
+            <audio id="reproductor" controls preload="auto">
+                {% if beats %}
+                <source src="/beats/{{ beats[0] }}" type="audio/mpeg">
+                {% endif %}
+                Tu navegador no soporta audio.
+            
+        </div>
+
+        <div class="seccion palabras">
+            <h3>📝 PALABRAS PARA RAPEAR</h3>
+            <div id="cajaPalabras">
+                <span class="palabra"></span>
+                <span class="palabra"></span>
+                <span class="palabra"></span>
+                <span class="palabra"></span>
+            </div>
+            <button id="btnGenerar">🔄 NUEVO BLOQUE</button>
+        </div>
+
+        <div class="info">
+            💡 Usa cada palabra en tus rimas mientras suena el beat. Tienes más de 1000 palabras disponibles.
+        </div>
+    </div>
+
+<script>
+const lista = document.getElementById("listaBeats");
+const reproductor = document.getElementById("reproductor");
+const caja = document.querySelectorAll(".palabra");
+const btn = document.getElementById("btnGenerar");
+
+lista.addEventListener("change", ()=>{
+    if(lista.value){
+        reproductor.src = "/beats/" + lista.value;
+        reproductor.load();
+    }
+});
+
+fetch("/generar")
+.then(r=>r.json())
+.then(d=> poner(d.palabras));
+
+btn.addEventListener("click", ()=>{
+    fetch("/generar")
+    .then(r=>r.json())
+    .then(d=> poner(d.palabras));
+});
+
+function poner(lista){
+    caja.forEach((span, i)=> span.textContent = lista[i]);
+}
+</script>
+</body>
+</html>
+    """, beats=obtener_beats())
+
+# ---------------------- GENERAR PALABRAS ----------------------
+@app.route("/generar")
+def generar():
+    seleccionadas = random.sample(PALABRAS_BASE, 4)
+    return jsonify({"palabras": seleccionadas})
+
+# ---------------------- CARGAR BEATS ----------------------
+@app.route("/beats/<nombre>")
+def ver_beat(nombre):
+    return send_from_directory(CARPETA_BEATS, nombre)
+
+if __name__ == "__main__":
+    print("✅ Proyecto listo! Abre: http://localhost:5000")
+    app.run(debug=True)
