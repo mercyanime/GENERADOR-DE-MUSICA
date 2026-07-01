@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Generador Palabras Freestyle</title>
+    <style>
+        * {box-sizing: border-box; margin:0; padding:0; font-family: Arial, sans-serif;}
+        body {background:#121212; color:#fff; padding:20px; text-align:center; max-width:700px; margin:0 auto;}
+        h1 {color:#f59e0b; margin-bottom:25px; font-size:1.8rem;}
+        .caja-palabras {display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:30px 0;}
+        .palabra {background:#1e1e1e; border:2px solid #f59e0b; padding:15px 20px; border-radius:10px; font-size:1.4rem; font-weight:bold; color:#f59e0b; min-width:110px;}
+        button {background:#f59e0b; color:#000; border:none; padding:15px 30px; font-size:1.1rem; font-weight:bold; border-radius:8px; cursor:pointer; transition:0.2s;}
+        button:hover {background:#d97706; transform:scale(1.03);}
+        .info {margin-top:20px; color:#aaa; font-size:0.95rem;}
+        audio {width:100%; margin:20px 0; border-radius:8px;}
+    </style>
+</head>
+<body>
+
+<h1>🔥 ENTRENADOR DE FREESTYLE</h1>
+
+<!-- Reproductor de beat -->
+<audio controls>
+    <source src="tu-beat.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+
+
+<!-- Palabras generadas -->
+<div class="caja-palabras" id="caja"></div>
+
+<!-- Botón -->
+<button onclick="generar()">🔄 NUEVO BLOQUE</button>
+
+<div class="info">Más de 1000 palabras fáciles para rimar 🎤</div>
+
+<script>
+// MÁS DE 1000 PALABRAS FÁCILES, IGUAL QUE ANTES
+const PALABRAS = [
+"hacer","decir","ir","ver","dar","saber","querer","llegar","pasar","deber",
+"poner","parecer","quedar","resultar","hablar","llevar","dejar","seguir","encontrar","llamar",
+"trabajar","vivir","sentir","intentar","conseguir","comenzar","terminar","servir","saltar","correr",
+"caminar","bailar","cantar","reír","llorar","soñar","pensar","creer","dudar","esperar",
+"luchar","pelear","ganar","perder","subir","bajar","entrar","salir","abrir","cerrar",
+"romper","arreglar","crear","destruir","ayudar","apoyar","defender","atacar","escapar","quedar",
+"mirar","escuchar","leer","escribir","aprender","enseñar","jugar","descansar","comer","beber",
+"dormir","despertar","levantar","caer","volar","nadar","conducir","manejar","empujar","tirar",
+"agarrar","soltar","sostener","mover","marcharse","regresar","volver","partir","buscar","olvidar",
+"recordar","imaginar","razonar","gustar","odiar","amar","aceptar","rechazar","invitar","visitar",
+"viajar","parar","arrancar","frenar","acelerar","girar","doblar","cruzar","atravesar","brincar",
+"trepar","escalar","descender","ascender","lanzar","recoger","guardar","sacar","meter","traer",
+"enviar","recibir","comprar","vender","pagar","cobrar","prestar","pedir","donar","regalar",
+"tomar","usar","utilizar","probar","ensayar","practicar","estudiar","repasar","explicar","contar",
+"narrar","relatar","mencionar","nombrar",
+
+"luz","sol","luna","estrella","cielo","nube","lluvia","viento","fuego","tierra",
+"agua","mar","río","lago","montaña","valle","bosque","camino","puente","calle",
+"casa","puerta","ventana","techo","suelo","pared","silla","mesa","cama","libro",
+"papel","pluma","lápiz","hoja","dinero","oro","plata","cobre","piedra","arena",
+"flor","árbol","fruto","semilla","raíz","rama","pájaro","pez","animal","perro",
+"gato","caballo","león","oso","lobo","águila","serpiente","tigre","vaca","cerdo",
+"oveja","gallina","pato","abeja","hormiga","mosca","araña","ratón","conejo","zorro",
+"espada","escudo","casco","flecha","arco","lanza","cuchillo","botella","vaso","taza",
+"ropa","zapato","sombrero","camisa","pantalón","abrigo","guante","mochila","bolsa","caja",
+"llave","cerrojo","candado","cadena","cuerda","nudo","red","malla","barco","coche",
+"avión","tren","bicicleta","rueda","motor","llanta","faro","lámpara","hoguera","linterna",
+"pueblo","ciudad","país","mundo","planeta","universo","callejón","plaza","parque","jardín",
+"escuela","colegio","universidad","hospital","iglesia","templo","castillo","torre","muralla","foso",
+"escalera","pasillo","habitación","salón","cocina","baño","sótano","ático","bolígrafo","cuaderno",
+"goma","regla","tijera","pegamento","carpeta","libreta","mapa","reloj","calendario","agenda",
+"teléfono","celular","computadora","pantalla","teclado","ratón","altavoz",
+
+"amor","odio","paz","guerra","alegría","tristeza","miedo","valor","fuerza","debilidad",
+"calor","frío","oscuro","claro","alto","bajo","largo","corto","ancho","estrecho",
+"rápido","lento","fácil","difícil","bueno","malo","grande","pequeño","nuevo","viejo",
+"joven","adulto","niño","hombre","mujer","persona","amigo","enemigo","familia","hermano",
+"madre","padre","hijo","hija","abuelo","abuela","tío","tía","primo","prima",
+"libre","esclavo","rico","pobre","feliz","triste","enojado","calmado","tímido","valiente",
+"sabio","tonto","inteligente","loco","cuerdo","sano","enfermo","débil","bonito","feo",
+"lindo","hermoso","sucio","limpio","seco","mojado","duro","blando","pesado","ligero",
+"lleno","vacío","cerca","lejos","dentro","fuera","arriba","abajo","antes","después",
+"ahora","siempre","nunca","mucho","poco","bastante","nada","todo","algo","tranquilo",
+"nervioso","ansioso","seguro","dudoso","firme","leal","traidor","sincero","falso","veraz",
+"mentiroso","humilde","orgulloso","generoso","tacaño","cobarde",
+
+"vida","muerte","tiempo","espacio","momento","año","mes","día","hora","minuto",
+"segundo","pasado","presente","futuro","origen","fin","principio","meta","destino","suerte",
+"razón","locura","verdad","mentira","sueño","realidad","magia","misterio","secreto","historia",
+"leyenda","mito","cuento","poema","canto","melodía","ritmo","sonido","silencio","voz",
+"palabra","frase","verso","rima","estrofa","coro","fama","gloria","honor","éxito",
+"fracaso","victoria","derrota","poder","autoridad","derecho","deber","justicia","libertad","unión",
+"división","unidad","grupo","equipo","banda","pueblo","nación","patria","hogar","rincón",
+"esquina","centro","frontera","límite","muro","barrera","ruta","viaje","aventura","batalla",
+"acción","pasión","visión","misión","lección","canción","emoción","corazón","región","religión",
+"mentira","herida","partida","llegada","entrada","salida","caída","subida","huida","medida",
+"fuego","juego","luego","ciego","ruego","nuevo","lluevo","dolor","color","valor",
+"error","temor","pavor","sabor","labor","favor","rigor","luz","cruz","voz",
+"vez","pez","mes","tres","diez","juez","fe","mar","par","estar",
+"lugar","amar","sanar","ganar","llorar","orar","cielo","suelo","hielo","desvelo",
+"modelo","anhelo","duelo","consuelo","revuelo","velo","tierra","guerra","sierra","feria",
+"miseria","espera","fiera","era","materia","carrera","fuerza","certeza","belleza","tristeza",
+"pereza","riqueza","pobreza","dureza","bajeza","nobleza","camino","divino","vecino","pino",
+"vino","signo","diseño","ensueño","tierno","eterno","tempestad","cicatriz","rapto","frenesí",
+"impulso","brillo","destello","resplandor","sombrío",
+
+"abajo","acá","allá","allí","alrededor","apenas","aquí","atrás","aún","bien",
+"casi","cómo","cuándo","cuánto","dónde","mal","más","menos","muy","pronto",
+"tanto","temprano","tarde","ahí","entonces","mientras","uno","dos","cuatro","cinco",
+"seis","siete","ocho","nueve","primero","segundo","tercero","cuarto","quinto","sexto",
+"séptimo","octavo","noveno","décimo","blanco","negro","rojo","azul","verde","amarillo",
+"naranja","morado","gris","marrón","ante","bajo","con","contra","desde","entre",
+"hacia","hasta","para","por","según","sin","sobre","tras","durante","él",
+"ella","ello","nosotros","vosotros","ellos","ellas","tú","yo","usted","mío",
+"tuyo","suyo","nuestro","vuestro","propio","ajeno","mismo","otro","tal","demasiado",
+"igual","medio","suficiente","nadie","alguien","quienquiera","cualquiera","cada","ambos","ninguno",
+"alguno","varios","resto","mitad","parte","encima","debajo","detrás","delante","enfrente",
+"junto","separado","unido"
+];
+
+// GENERAR 4 PALABRAS AL AZAR
+function generar(){
+    const caja = document.getElementById("caja");
+    const seleccionadas = [];
+    while(seleccionadas.length < 4){
+        const palabra = PALABRAS[Math.floor(Math.random() * PALABRAS.length)];
+        if(!seleccionadas.includes(palabra)) seleccionadas.push(palabra);
+    }
+    caja.innerHTML = seleccionadas.map(p => `<div class="palabra">${p}</div>`).join("");
+}
+
+// CARGAR AL INICIO
+generar();
+</script>
+</body>
+</html>
