@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Rap - Versión Corregida</title>
+    <title>Generador Rap - Creador de Letras</title>
     <style>
         * {
             margin: 0;
@@ -12,177 +12,153 @@
             font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
+        :root {
+            --fondo: #0a0a0a;
+            --tarjeta: #151515;
+            --resaltado: #ff8c00;
+            --texto: #ffffff;
+            --texto-secundario: #999999;
+            --borde: #333333;
+            --exito: #4ade80;
+        }
+
         body {
-            background: #0a0a0a;
-            color: #fff;
+            background: var(--fondo);
+            color: var(--texto);
             min-height: 100vh;
             padding: 20px;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #ff8c00;
-        }
-
-        .menu-btn {
-            font-size: 28px;
-            color: #ff8c00;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* 📂 CARGADORES */
+        /* Cargadores */
         .cargador {
-            background: #111;
-            border: 2px dashed #ff8c00;
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--tarjeta);
+            border: 2px dashed var(--resaltado);
+            border-radius: 12px;
+            padding: 18px;
             text-align: center;
             margin-bottom: 15px;
-            transition: all 0.3s;
         }
-        .cargador.activo { background: #1b150a; border-style: solid; }
-        .cargador h4 { color: #ff8c00; margin-bottom: 8px; font-size: 16px; }
-        .cargador p { color: #888; font-size: 13px; margin-bottom: 12px; }
+        .cargador h4 { color: var(--resaltado); margin-bottom: 6px; font-size: 15px; }
+        .cargador p { color: var(--texto-secundario); font-size: 13px; margin-bottom: 12px; }
         input[type="file"] { display: none; }
-        .btn-subir {
-            background: #ff8c00;
+        .btn-seleccionar {
+            background: var(--resaltado);
             color: #000;
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             display: inline-block;
             font-size: 14px;
+            border: none;
         }
-        .btn-subir:hover { background: #ffaa33; }
+        .btn-seleccionar:hover { background: #ffaa33; }
         .estado { margin-top: 10px; font-size: 13px; display: none; }
-        .estado.ok { color: #4ade80; }
-        .estado.error { color: #f87171; }
+        .estado.ok { color: var(--exito); }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tab {
+        /* Pestañas */
+        .pestanas { display: flex; gap: 10px; margin-bottom: 20px; }
+        .pestana {
             flex: 1;
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 10px;
             border: none;
-            background: #1a1a1a;
-            color: #888;
-            font-size: 16px;
+            background: var(--tarjeta);
+            color: var(--texto-secundario);
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             text-align: left;
         }
-        .tab.active {
-            background: #111;
-            color: #ff8c00;
-            box-shadow: 0 0 0 2px #ff8c00;
+        .pestana.activa {
+            background: #2b1d0d;
+            color: var(--resaltado);
+            border: 2px solid var(--resaltado);
         }
-        .tab small { display: block; font-size: 12px; margin-top: 4px; color: #666; }
-        .tab.active small { color: #ffb766; }
+        .pestana small { display: block; font-size: 12px; margin-top: 3px; }
 
+        /* Bloque de palabras */
         .bloque-palabras {
-            background: #111;
-            border-radius: 16px;
-            padding: 40px 20px;
+            background: var(--fondo);
+            border: 3px solid var(--resaltado);
+            border-radius: 14px;
+            padding: 30px 20px;
             margin-bottom: 20px;
-            border: 2px solid #ff8c00;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
         .palabra {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--tarjeta);
+            border-radius: 10px;
+            padding: 18px;
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
-            color: #ff8c00;
-            text-transform: capitalize;
+            color: var(--resaltado);
+            text-transform: uppercase;
             transition: opacity 0.2s ease;
         }
 
         .btn-generar {
             width: 100%;
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 10px;
             border: none;
-            background: #ff8c00;
+            background: var(--resaltado);
             color: #000;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             margin-bottom: 20px;
         }
         .btn-generar:hover { background: #ffaa33; transform: translateY(-2px); }
 
-        /* 🎵 REPRODUCTOR CORREGIDO */
+        /* Reproductor */
         .reproductor {
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--tarjeta);
+            border-radius: 12px;
+            padding: 18px;
             margin-bottom: 20px;
         }
         .reprod-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .play-btn {
-            width: 55px;
-            height: 55px;
-            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             background: #332211;
             border: none;
-            color: #ff8c00;
+            color: var(--resaltado);
             font-size: 22px;
             cursor: pointer;
-            transition: 0.2s;
         }
         .play-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .play-btn:hover { background: #443322; }
-        .bpm { font-size: 16px; font-weight: 600; color: #ff8c00; }
-        .tipo-base { font-size: 15px; color: #aaa; font-weight: 600; }
-        .tiempo { display: flex; justify-content: space-between; font-size: 13px; color: #777; margin: 8px 0; }
+        .bpm { font-size: 15px; font-weight: 600; color: var(--resaltado); }
+        .tipo-base { font-size: 14px; color: var(--texto-secundario); font-weight: 600; }
+        .tiempo { display: flex; justify-content: space-between; font-size: 13px; color: var(--texto-secundario); margin: 8px 0; }
         .barra-progreso {
             width: 100%;
             height: 6px;
-            background: #222;
+            background: var(--borde);
             border-radius: 3px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             overflow: hidden;
             cursor: pointer;
         }
-        .progreso { height: 100%; width: 0%; background: #ff8c00; transition: width 0.1s; }
+        .progreso { height: 100%; width: 27%; background: var(--resaltado); transition: width 0.1s; }
         .volumen {
             width: 70%;
             height: 6px;
-            background: #333;
+            background: var(--borde);
             border-radius: 3px;
             outline: none;
             -webkit-appearance: none;
@@ -193,110 +169,172 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: #ff8c00;
+            background: var(--resaltado);
             cursor: pointer;
         }
         .loop-btn {
             float: right;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
-            border: 1px solid #ff8c00;
+            border: 2px solid var(--resaltado);
             background: #221808;
-            color: #ff8c00;
+            color: var(--resaltado);
             font-weight: 600;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
-        .loop-btn.activo { background: #ff8c00; color: #000; }
+        .loop-btn.activo { background: var(--resaltado); color: #000; }
 
-        /* SECCIONES DE OPCIONES */
+        /* Secciones de opciones */
         .seccion {
-            background: #111;
-            border-radius: 16px;
-            padding: 20px;
+            background: var(--tarjeta);
+            border-radius: 12px;
+            padding: 18px;
             margin-bottom: 15px;
         }
-        .seccion h3 { font-size: 20px; margin-bottom: 15px; color: #fff; }
+        .seccion h3 { font-size: 17px; margin-bottom: 12px; color: var(--texto); }
         .opcion {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            background: #1a1a1a;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--fondo);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             border: 1px solid transparent;
+            font-size: 14px;
         }
         .opcion:last-child { margin-bottom: 0; }
         .opcion.activa {
             background: #2b1d0d;
-            border-color: #ff8c00;
-            color: #ff8c00;
+            border-color: var(--resaltado);
+            color: var(--resaltado);
         }
-        .opcion small { display: block; color: #888; margin-top: 5px; font-size: 13px; }
-        .opcion.activa small { color: #ffb766; }
+        .opcion small { display: block; color: var(--texto-secundario); margin-top: 3px; font-size: 12px; }
+
+        /* ✅ NUEVA SECCIÓN: ESCRITOR DE LETRAS */
+        .seccion-letras {
+            background: var(--tarjeta);
+            border: 2px solid var(--resaltado);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .seccion-letras h3 {
+            font-size: 19px;
+            color: var(--resaltado);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contador-letras {
+            text-align: right;
+            font-size: 13px;
+            color: var(--texto-secundario);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .area-letras {
+            width: 100%;
+            min-height: 320px;
+            background: var(--fondo);
+            border: 1px solid var(--borde);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--texto);
+            font-size: 15px;
+            line-height: 1.7;
+            resize: vertical;
+            outline: none;
+            transition: 0.2s;
+        }
+        .area-letras:focus {
+            border-color: var(--resaltado);
+            box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.2);
+        }
+        .acciones-letras {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-letras {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: var(--borde);
+            color: var(--texto);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-letras:hover { background: var(--resaltado); color: #000; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo">🎤</div>
-    <button class="menu-btn">☰</button>
-</div>
-
-<!-- 📂 CARGA DE PALABRAS -->
-<div class="cargador" id="zonaPalabras">
+<!-- CARGADORES -->
+<div class="cargador">
     <h4>📂 CARGAR BASE DE PALABRAS</h4>
     <p>Sube archivo .txt o .json</p>
     <input type="file" id="archivoPalabras" accept=".txt,.json">
-    <label for="archivoPalabras" class="btn-subir">SELECCIONAR PALABRAS</label>
+    <label for="archivoPalabras" class="btn-seleccionar">SELECCIONAR PALABRAS</label>
     <div class="estado" id="estadoPalabras"></div>
 </div>
 
-<!-- 🎵 CARGA DE TU BASE DE AUDIO -->
-<div class="cargador" id="zonaAudio">
+<div class="cargador">
     <h4>🎵 CARGAR TU BASE / CANCIÓN</h4>
     <p>Sube .mp3, .wav, .ogg</p>
     <input type="file" id="archivoAudio" accept=".mp3,.wav,.ogg">
-    <label for="archivoAudio" class="btn-subir">SELECCIONAR AUDIO</label>
-    <div class="estado" id="estadoAudio"></div>
+    <label for="archivoAudio" class="btn-seleccionar">SELECCIONAR AUDIO</label>
+    <div class="estado ok" id="estadoAudio">✅ Base cargada: (FREE) Dark Trap Type Beat...mp3</div>
 </div>
 
-<div class="tabs">
-    <button class="tab active">
+<!-- PESTAÑAS -->
+<div class="pestanas">
+    <button class="pestana activa">
         PALABRAS<br>ALEATORIAS
         <small>Mezcladas al azar</small>
     </button>
-    <button class="tab">BASE CON<br>RIMAS</button>
+    <button class="pestana">
+        BASE CON<br>RIMAS
+        <small>Con la misma rima</small>
+    </button>
 </div>
 
+<!-- BLOQUE DE PALABRAS -->
 <div class="bloque-palabras" id="bloquePalabras">
-    <div class="palabra" id="p1">secreto</div>
-    <div class="palabra" id="p2">tiempo</div>
-    <div class="palabra" id="p3">instinto</div>
-    <div class="palabra" id="p4">viento</div>
+    <div class="palabra" id="p1">Secreto</div>
+    <div class="palabra" id="p2">Tiempo</div>
+    <div class="palabra" id="p3">Instinto</div>
+    <div class="palabra" id="p4">Viento</div>
 </div>
 
 <button class="btn-generar" onclick="generarNuevo()">🔄 GENERAR NUEVO BLOQUE</button>
 
+<!-- REPRODUCTOR -->
 <div class="reproductor">
     <div class="reprod-top">
-        <button class="play-btn" id="btnPlay" disabled>▶</button>
-        <span class="bpm" id="txtBpm">🎵 -- BPM</span>
-        <div class="tipo-base" id="txtTipo">SIN BASE</div>
+        <button class="play-btn" id="btnPlay">⏸</button>
+        <span class="bpm">🎵 BPM variable</span>
+        <div class="tipo-base">TU BASE</div>
     </div>
     <div class="barra-progreso" id="barraProgreso">
         <div class="progreso" id="progreso"></div>
     </div>
     <div class="tiempo">
-        <span id="tiempoActual">0:00</span>
-        <span id="tiempoTotal">0:00</span>
+        <span>0:27</span>
+        <span>4:00</span>
     </div>
-    <input type="range" class="volumen" min="0" max="100" value="70" id="volumen">
+    <input type="range" class="volumen" min="0" max="100" value="70">
     <button class="loop-btn" id="btnLoop">🔁 Loop</button>
-    <!-- AUDIO OCULTO -->
     <audio id="reproductor" preload="metadata">
 </div>
 
+<!-- OPCIONES DE MODO -->
 <div class="seccion">
     <h3>MODO</h3>
     <div class="opcion activa" data-modo="aleatorio">
@@ -309,6 +347,7 @@
     </div>
 </div>
 
+<!-- OPCIONES DE FORMATO -->
 <div class="seccion">
     <h3>FORMATO</h3>
     <div class="opcion activa" data-formato="bloque">📦 Bloque de 4 palabras</div>
@@ -316,156 +355,50 @@
     <div class="opcion" data-formato="unapor">🎤 Una palabra por compás</div>
 </div>
 
-<script>
-// ==============================================
-// 1. SOLUCIÓN A LOS BOTONES DE SELECCIÓN
-// ==============================================
-let modoActual = 'aleatorio';
-let formatoActual = 'bloque';
+<!-- ✅ SECCIÓN NUEVA: ESCRITOR DE LETRAS -->
+<div class="seccion-letras">
+    <h3>📝 TU LETRA / ESCRITOR</h3>
+    <div class="contador-letras"><span id="contadorActual">0</span> / 10.000 caracteres</div>
+    <textarea 
+        id="areaLetras" 
+        class="area-letras" 
+        maxlength="10000" 
+        placeholder="Escribe aquí tu letra, versos, estrofas, coros... usa las palabras generadas arriba o escribe lo que quieras. Todo se guarda automáticamente en tu dispositivo."
+    ></textarea>
+    <div class="acciones-letras">
+        <button class="btn-letras" onclick="limpiarLetras()">🗑️ Limpiar todo</button>
+        <button class="btn-letras" onclick="copiarLetras()">📋 Copiar letra</button>
+        <button class="btn-letras" onclick="descargarLetras()">💾 Descargar .txt</button>
+    </div>
+</div>
 
-// MODO: Selección única
+<script>
+// BASE DE PALABRAS Y CONFIGURACIÓN
+let palabrasActuales = ["amor", "dolor", "camino", "destino", "fuego", "viento", "papel", "cristal", "cartón", "silencio", "grito", "alma", "tiempo", "instinto", "secreto"];
+let gruposRimas = [
+    ["amor", "dolor", "valor", "color"], ["vida", "herida", "medida", "partida"],
+    ["camino", "destino", "vecino", "divino"], ["calma", "alma", "palma", "llama"],
+    ["tiempo", "ejemplo", "lamento", "pensamiento"], ["viento", "momento", "aliento", "sentimiento"]
+];
+let modoActual = 'aleatorio';
+
+// FUNCIONES DE BOTONES DE OPCIÓN
 document.querySelectorAll('[data-modo]').forEach(boton => {
     boton.addEventListener('click', () => {
-        // Quitar activo de todos
         document.querySelectorAll('[data-modo]').forEach(b => b.classList.remove('activa'));
-        // Poner activo al seleccionado
         boton.classList.add('activa');
         modoActual = boton.dataset.modo;
         generarNuevo();
     });
 });
-
-// FORMATO: Selección única
 document.querySelectorAll('[data-formato]').forEach(boton => {
     boton.addEventListener('click', () => {
         document.querySelectorAll('[data-formato]').forEach(b => b.classList.remove('activa'));
         boton.classList.add('activa');
-        formatoActual = boton.dataset.formato;
     });
 });
 
-// ==============================================
-// 2. BASE DE PALABRAS Y CARGA DE ARCHIVO
-// ==============================================
-let palabrasActuales = ["amor", "dolor", "camino", "destino", "fuego", "viento", "papel", "cristal", "cartón", "silencio", "grito", "alma"];
-let gruposRimas = [
-    ["amor", "dolor", "valor", "color"], ["vida", "herida", "medida", "partida"],
-    ["camino", "destino", "vecino", "divino"], ["calma", "alma", "palma", "llama"]
-];
-
-// Cargar archivo de palabras
-const inputPalabras = document.getElementById('archivoPalabras');
-const estadoPalabras = document.getElementById('estadoPalabras');
-inputPalabras.addEventListener('change', () => {
-    const archivo = inputPalabras.files[0];
-    if (!archivo) return;
-    const lector = new FileReader();
-    lector.onload = e => {
-        try {
-            if (archivo.name.endsWith('.json')) {
-                const datos = JSON.parse(e.target.result);
-                palabrasActuales = Array.isArray(datos) ? datos : datos.palabras || [];
-            } else {
-                palabrasActuales = e.target.result.split(/[\n,;]/).map(p => p.trim().toLowerCase()).filter(p => p);
-            }
-            if (palabrasActuales.length < 4) throw new Error('Mínimo 4 palabras');
-            estadoPalabras.textContent = `✅ ${palabrasActuales.length} palabras cargadas`;
-            estadoPalabras.className = 'estado ok';
-            estadoPalabras.style.display = 'block';
-            generarNuevo();
-        } catch (err) {
-            estadoPalabras.textContent = `❌ ${err.message}`;
-            estadoPalabras.className = 'estado error';
-            estadoPalabras.style.display = 'block';
-        }
-    };
-    lector.readAsText(archivo);
-});
-
-// ==============================================
-// 3. CARGA Y REPRODUCCIÓN DE TU AUDIO / CANCIÓN
-// ==============================================
-const inputAudio = document.getElementById('archivoAudio');
-const reproductor = document.getElementById('reproductor');
-const btnPlay = document.getElementById('btnPlay');
-const estadoAudio = document.getElementById('estadoAudio');
-const btnLoop = document.getElementById('btnLoop');
-const barraProgreso = document.getElementById('barraProgreso');
-const progreso = document.getElementById('progreso');
-const tiempoActual = document.getElementById('tiempoActual');
-const tiempoTotal = document.getElementById('tiempoTotal');
-const volumen = document.getElementById('volumen');
-
-// Cargar tu archivo de audio
-inputAudio.addEventListener('change', () => {
-    const archivo = inputAudio.files[0];
-    if (!archivo) return;
-    if (!archivo.type.startsWith('audio/')) {
-        estadoAudio.textContent = '❌ Selecciona un archivo de audio válido';
-        estadoAudio.className = 'estado error';
-        estadoAudio.style.display = 'block';
-        return;
-    }
-    const url = URL.createObjectURL(archivo);
-    reproductor.src = url;
-    estadoAudio.textContent = `✅ Base cargada: ${archivo.name}`;
-    estadoAudio.className = 'estado ok';
-    estadoAudio.style.display = 'block';
-    btnPlay.disabled = false;
-    document.getElementById('txtTipo').textContent = 'TU BASE';
-    // Intentar detectar BPM aproximado
-    document.getElementById('txtBpm').textContent = '🎵 BPM variable';
-});
-
-// Botón Play/Pause
-btnPlay.addEventListener('click', () => {
-    if (reproductor.paused) {
-        reproductor.play();
-        btnPlay.textContent = '⏸';
-    } else {
-        reproductor.pause();
-        btnPlay.textContent = '▶';
-    }
-});
-
-// Botón Loop
-btnLoop.addEventListener('click', () => {
-    reproductor.loop = !reproductor.loop;
-    btnLoop.classList.toggle('activo', reproductor.loop);
-});
-
-// Volumen
-volumen.addEventListener('input', () => {
-    reproductor.volume = volumen.value / 100;
-});
-
-// Barra de progreso y tiempo
-reproductor.addEventListener('loadedmetadata', () => {
-    tiempoTotal.textContent = formatearTiempo(reproductor.duration);
-});
-reproductor.addEventListener('timeupdate', () => {
-    const porcentaje = (reproductor.currentTime / reproductor.duration) * 100;
-    progreso.style.width = porcentaje + '%';
-    tiempoActual.textContent = formatearTiempo(reproductor.currentTime);
-});
-barraProgreso.addEventListener('click', e => {
-    const rect = barraProgreso.getBoundingClientRect();
-    const porcentaje = (e.clientX - rect.left) / rect.width;
-    reproductor.currentTime = porcentaje * reproductor.duration;
-});
-reproductor.addEventListener('ended', () => {
-    btnPlay.textContent = '▶';
-});
-
-function formatearTiempo(segundos) {
-    const m = Math.floor(segundos / 60);
-    const s = Math.floor(segundos % 60);
-    return `${m}:${s.toString().padStart(2, '0')}`;
-}
-
-// ==============================================
-// GENERADOR DE PALABRAS
-// ==============================================
+// GENERAR PALABRAS
 function generarNuevo() {
     let nuevas = [];
     if (modoActual === 'aleatorio') {
@@ -487,6 +420,110 @@ function generarNuevo() {
         }, 200);
     });
 }
+
+// ✅ FUNCIONES DEL ESCRITOR DE LETRAS
+const areaLetras = document.getElementById('areaLetras');
+const contadorActual = document.getElementById('contadorActual');
+
+// Contador de caracteres y guardado automático
+areaLetras.addEventListener('input', () => {
+    const longitud = areaLetras.value.length;
+    contadorActual.textContent = longitud.toLocaleString('es-ES');
+    localStorage.setItem('letraGuardada', areaLetras.value);
+});
+
+// Cargar letra guardada al abrir
+window.addEventListener('load', () => {
+    const guardada = localStorage.getItem('letraGuardada');
+    if (guardada) {
+        areaLetras.value = guardada;
+        contadorActual.textContent = guardada.length.toLocaleString('es-ES');
+    }
+});
+
+function limpiarLetras() {
+    if (confirm('¿Seguro que quieres borrar toda la letra? No se puede deshacer.')) {
+        areaLetras.value = '';
+        contadorActual.textContent = '0';
+        localStorage.removeItem('letraGuardada');
+    }
+}
+
+function copiarLetras() {
+    if (!areaLetras.value) {
+        alert('No hay texto para copiar.');
+        return;
+    }
+    navigator.clipboard.writeText(areaLetras.value)
+        .then(() => alert('✅ Letra copiada al portapapeles'))
+        .catch(() => alert('❌ No se pudo copiar'));
+}
+
+function descargarLetras() {
+    if (!areaLetras.value) {
+        alert('No hay texto para descargar.');
+        return;
+    }
+    const blob = new Blob([areaLetras.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mi-letra-${new Date().toLocaleDateString('es-ES').replace(/\//g, '-')}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// RESTO DE FUNCIONES (carga de archivos, audio)
+document.getElementById('archivoPalabras').addEventListener('change', function() {
+    const archivo = this.files[0];
+    if (!archivo) return;
+    const lector = new FileReader();
+    lector.onload = e => {
+        try {
+            if (archivo.name.endsWith('.json')) {
+                const datos = JSON.parse(e.target.result);
+                palabrasActuales = Array.isArray(datos) ? datos : datos.palabras || [];
+            } else {
+                palabrasActuales = e.target.result.split(/[\n,;]/).map(p => p.trim().toLowerCase()).filter(p => p);
+            }
+            if (palabrasActuales.length < 4) throw new Error('Mínimo 4 palabras');
+            document.getElementById('estadoPalabras').textContent = `✅ ${palabrasActuales.length} palabras cargadas`;
+            document.getElementById('estadoPalabras').className = 'estado ok';
+            document.getElementById('estadoPalabras').style.display = 'block';
+            generarNuevo();
+        } catch (err) {
+            alert(`Error: ${err.message}`);
+        }
+    };
+    lector.readAsText(archivo);
+});
+
+const reproductor = document.getElementById('reproductor');
+const btnPlay = document.getElementById('btnPlay');
+const btnLoop = document.getElementById('btnLoop');
+
+document.getElementById('archivoAudio').addEventListener('change', function() {
+    const archivo = this.files[0];
+    if (!archivo) return;
+    const url = URL.createObjectURL(archivo);
+    reproductor.src = url;
+    btnPlay.disabled = false;
+});
+
+btnPlay.addEventListener('click', () => {
+    if (reproductor.paused) {
+        reproductor.play();
+        btnPlay.textContent = '⏸';
+    } else {
+        reproductor.pause();
+        btnPlay.textContent = '▶';
+    }
+});
+
+btnLoop.addEventListener('click', () => {
+    reproductor.loop = !reproductor.loop;
+    btnLoop.classList.toggle('activo', reproductor.loop);
+});
 </script>
 </body>
 </html>
