@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Rap - Creador de Letras</title>
+    <title>Generador Rap - Por Tema</title>
     <style>
         * {
             margin: 0;
@@ -57,6 +57,42 @@
         .btn-seleccionar:hover { background: #ffaa33; }
         .estado { margin-top: 10px; font-size: 13px; display: none; }
         .estado.ok { color: var(--exito); }
+
+        /* ✅ CAMPO DE TEMA */
+        .seccion-tema {
+            background: var(--tarjeta);
+            border: 2px solid var(--resaltado);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .seccion-tema label {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--resaltado);
+            margin-bottom: 10px;
+        }
+        .input-tema {
+            width: 100%;
+            padding: 12px;
+            background: var(--fondo);
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            color: var(--texto);
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-tema:focus {
+            border-color: var(--resaltado);
+            box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.2);
+        }
+        .ayuda-tema {
+            font-size: 12px;
+            color: var(--texto-secundario);
+            margin-top: 6px;
+        }
 
         /* Pestañas */
         .pestanas { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -211,7 +247,7 @@
         }
         .opcion small { display: block; color: var(--texto-secundario); margin-top: 3px; font-size: 12px; }
 
-        /* ✅ NUEVA SECCIÓN: ESCRITOR DE LETRAS */
+        /* ESCRITOR DE LETRAS */
         .seccion-letras {
             background: var(--tarjeta);
             border: 2px solid var(--resaltado);
@@ -290,14 +326,26 @@
     <p>Sube .mp3, .wav, .ogg</p>
     <input type="file" id="archivoAudio" accept=".mp3,.wav,.ogg">
     <label for="archivoAudio" class="btn-seleccionar">SELECCIONAR AUDIO</label>
-    <div class="estado ok" id="estadoAudio">✅ Base cargada: (FREE) Dark Trap Type Beat...mp3</div>
+    <div class="estado ok" id="estadoAudio"></div>
+</div>
+
+<!-- ✅ CAMPO DE TEMA -->
+<div class="seccion-tema">
+    <label for="tema">🎯 Tema</label>
+    <input 
+        type="text" 
+        id="tema" 
+        class="input-tema" 
+        placeholder="Escribe aquí tu tema: desamor, calle, lucha, amor, traición..."
+    >
+    <p class="ayuda-tema">Las palabras se generarán relacionadas con lo que escribas aquí</p>
 </div>
 
 <!-- PESTAÑAS -->
 <div class="pestanas">
     <button class="pestana activa">
         PALABRAS<br>ALEATORIAS
-        <small>Mezcladas al azar</small>
+        <small>Relacionadas al tema</small>
     </button>
     <button class="pestana">
         BASE CON<br>RIMAS
@@ -307,10 +355,10 @@
 
 <!-- BLOQUE DE PALABRAS -->
 <div class="bloque-palabras" id="bloquePalabras">
-    <div class="palabra" id="p1">Secreto</div>
-    <div class="palabra" id="p2">Tiempo</div>
-    <div class="palabra" id="p3">Instinto</div>
-    <div class="palabra" id="p4">Viento</div>
+    <div class="palabra" id="p1">ALIENTO</div>
+    <div class="palabra" id="p2">SENTIMIENTO</div>
+    <div class="palabra" id="p3">VIENTO</div>
+    <div class="palabra" id="p4">MOMENTO</div>
 </div>
 
 <button class="btn-generar" onclick="generarNuevo()">🔄 GENERAR NUEVO BLOQUE</button>
@@ -337,34 +385,40 @@
 <!-- OPCIONES DE MODO -->
 <div class="seccion">
     <h3>MODO</h3>
-    <div class="opcion activa" data-modo="aleatorio">
+    <div class="opcion" data-modo="aleatorio">
         🎲 Aleatorias
-        <small>4 palabras mezcladas</small>
+        <small>4 palabras relacionadas al tema</small>
     </div>
-    <div class="opcion" data-modo="rimas">
+    <div class="opcion activa" data-modo="rimas">
         🎵 Que riman entre sí
         <small>4 palabras con la misma rima</small>
     </div>
 </div>
 
-<!-- OPCIONES DE FORMATO -->
-<div class="seccion">
-    <h3>FORMATO</h3>
-    <div class="opcion activa" data-formato="bloque">📦 Bloque de 4 palabras</div>
-    <div class="opcion" data-formato="compases">🥁 Cambio cada 4 compases</div>
-    <div class="opcion" data-formato="unapor">🎤 Una palabra por compás</div>
-</div>
-
-<!-- ✅ SECCIÓN NUEVA: ESCRITOR DE LETRAS -->
+<!-- ESCRITOR DE LETRAS -->
 <div class="seccion-letras">
     <h3>📝 TU LETRA / ESCRITOR</h3>
-    <div class="contador-letras"><span id="contadorActual">0</span> / 10.000 caracteres</div>
+    <div class="contador-letras"><span id="contadorActual">583</span> / 10.000 caracteres</div>
     <textarea 
         id="areaLetras" 
         class="area-letras" 
         maxlength="10000" 
-        placeholder="Escribe aquí tu letra, versos, estrofas, coros... usa las palabras generadas arriba o escribe lo que quieras. Todo se guarda automáticamente en tu dispositivo."
-    ></textarea>
+        placeholder="Escribe aquí tu letra..."
+    >Tengo miles de sentimientos, pero me duele tu partida,
+no logro hallar sentido a esta miserable vida.
+
+No encuentro nada en mi habitación: fue amor sin medida,
+y por más que llore y te olvide, no sanará la herida.
+
+Ten la certeza: te di todo cuanto yo tenía,
+entre quererte y odiarme, solo hay más agonía.
+No te faltó nada, ni valor, ni compañía,
+si te tenía enfrente, me faltaba tu calor día tras día.
+Pretendiste que bastaba con olvidarme... y fue tu mayor cobardía.
+
+Es más que un sentimiento: tus promesas se las llevó el viento,
+yo fui quien disfrutaba cada instante, cada momento;
+cuando me besabas, me robabas hasta el aliento.</textarea>
     <div class="acciones-letras">
         <button class="btn-letras" onclick="limpiarLetras()">🗑️ Limpiar todo</button>
         <button class="btn-letras" onclick="copiarLetras()">📋 Copiar letra</button>
@@ -373,14 +427,45 @@
 </div>
 
 <script>
-// BASE DE PALABRAS Y CONFIGURACIÓN
-let palabrasActuales = ["amor", "dolor", "camino", "destino", "fuego", "viento", "papel", "cristal", "cartón", "silencio", "grito", "alma", "tiempo", "instinto", "secreto"];
+// BASE DE PALABRAS POR TEMAS
+const basePorTemas = {
+    "desamor": ["partida", "dolor", "herida", "olvido", "promesa", "viento", "aliento", "sentimiento", "momento", "agonía", "ausencia", "recuerdo", "llanto", "soledad", "fuego", "frío", "calor", "error", "cobardía", "verdad", "mentira", "camino", "destino", "vacío", "corazón", "alma", "sangre", "tiempo", "silencio"],
+    "amor": ["beso", "abrazo", "vida", "luz", "esperanza", "risa", "ternura", "fuerza", "unión", "camino", "mano", "estrella", "cielo", "flor", "eterno", "regalo", "lazo", "sueño", "realidad", "magia", "calor", "hogar", "refugio", "paz", "alma", "corazón", "sentimiento", "momento", "instante", "destino"],
+    "calle": ["asfalto", "esquina", "lucha", "hambre", "frío", "camino", "paso", "huella", "familia", "lealtad", "traición", "fuego", "hierro", "sangre", "valor", "miedo", "sueño", "realidad", "dinero", "poder", "ley", "justicia", "fuerza", "resistencia", "silencio", "noche", "día", "sol", "lluvia", "viento"],
+    "lucha": ["guerra", "batalla", "fuerza", "valor", "caída", "levantar", "meta", "camino", "obstáculo", "fuego", "hierro", "puño", "mente", "corazón", "fe", "esperanza", "victoria", "derrota", "unión", "fuerza", "resistencia", "camino", "destino", "límite", "superar", "crecer", "guía", "luz", "oscuridad", "paso"],
+    "traicion": ["mentira", "engaño", "cobardía", "puñal", "espalda", "falso", "verdad", "ocultar", "romper", "lazo", "confianza", "perder", "dolor", "herida", "llanto", "desilusión", "cara", "máscara", "cambio", "error", "culpa", "carga", "peso", "soledad", "recuerdo", "pasado", "lejos", "camino", "fuego", "ceniza"],
+    "vida": ["camino", "paso", "momento", "instante", "tiempo", "alma", "corazón", "sangre", "fuego", "agua", "tierra", "cielo", "nacer", "crecer", "morir", "luchar", "amar", "llorar", "reír", "aprender", "enseñar", "caminar", "caer", "levantar", "sueño", "realidad", "luz", "oscuridad", "destino", "libertad"]
+};
+
 let gruposRimas = [
     ["amor", "dolor", "valor", "color"], ["vida", "herida", "medida", "partida"],
     ["camino", "destino", "vecino", "divino"], ["calma", "alma", "palma", "llama"],
-    ["tiempo", "ejemplo", "lamento", "pensamiento"], ["viento", "momento", "aliento", "sentimiento"]
+    ["tiempo", "ejemplo", "lamento", "pensamiento"], ["viento", "momento", "aliento", "sentimiento"],
+    ["fuego", "juego", "luego", "fuego"], ["llanto", "manto", "espanto", "encanto"],
+    ["traición", "pasión", "visión", "lección"], ["calle", "detalle", "valle", "llave"]
 ];
+
+let palabrasActuales = basePorTemas.desamor;
 let modoActual = 'aleatorio';
+
+// DETECTAR TEMA Y CARGAR PALABRAS
+const inputTema = document.getElementById('tema');
+inputTema.addEventListener('input', () => {
+    const tema = inputTema.value.trim().toLowerCase();
+    if (!tema) {
+        palabrasActuales = Object.values(basePorTemas).flat();
+        return;
+    }
+    // Buscar coincidencia con temas
+    for (const [nombre, palabras] of Object.entries(basePorTemas)) {
+        if (tema.includes(nombre) || nombre.includes(tema)) {
+            palabrasActuales = palabras;
+            return;
+        }
+    }
+    // Si no hay tema exacto, usar todas
+    palabrasActuales = Object.values(basePorTemas).flat();
+});
 
 // FUNCIONES DE BOTONES DE OPCIÓN
 document.querySelectorAll('[data-modo]').forEach(boton => {
@@ -391,24 +476,19 @@ document.querySelectorAll('[data-modo]').forEach(boton => {
         generarNuevo();
     });
 });
-document.querySelectorAll('[data-formato]').forEach(boton => {
-    boton.addEventListener('click', () => {
-        document.querySelectorAll('[data-formato]').forEach(b => b.classList.remove('activa'));
-        boton.classList.add('activa');
-    });
-});
 
-// GENERAR PALABRAS
+// GENERAR PALABRAS RELACIONADAS AL TEMA
 function generarNuevo() {
     let nuevas = [];
     if (modoActual === 'aleatorio') {
+        const lista = palabrasActuales.length >=4 ? palabrasActuales : Object.values(basePorTemas).flat();
         while (nuevas.length < 4) {
-            const p = palabrasActuales[Math.floor(Math.random() * palabrasActuales.length)];
-            if (!nuevas.includes(p)) nuevas.push(p);
+            const p = lista[Math.floor(Math.random() * lista.length)];
+            if (!nuevas.includes(p)) nuevas.push(p.toUpperCase());
         }
     } else {
         const grupo = gruposRimas[Math.floor(Math.random() * gruposRimas.length)];
-        nuevas = [...grupo].sort(() => Math.random() - 0.5);
+        nuevas = [...grupo].sort(() => Math.random() - 0.5).map(p => p.toUpperCase());
     }
     const ids = ['p1', 'p2', 'p3', 'p4'];
     ids.forEach((id, i) => {
@@ -421,18 +501,16 @@ function generarNuevo() {
     });
 }
 
-// ✅ FUNCIONES DEL ESCRITOR DE LETRAS
+// FUNCIONES DEL ESCRITOR DE LETRAS
 const areaLetras = document.getElementById('areaLetras');
 const contadorActual = document.getElementById('contadorActual');
 
-// Contador de caracteres y guardado automático
 areaLetras.addEventListener('input', () => {
     const longitud = areaLetras.value.length;
     contadorActual.textContent = longitud.toLocaleString('es-ES');
     localStorage.setItem('letraGuardada', areaLetras.value);
 });
 
-// Cargar letra guardada al abrir
 window.addEventListener('load', () => {
     const guardada = localStorage.getItem('letraGuardada');
     if (guardada) {
@@ -473,7 +551,7 @@ function descargarLetras() {
     URL.revokeObjectURL(url);
 }
 
-// RESTO DE FUNCIONES (carga de archivos, audio)
+// CARGA DE ARCHIVOS DE PALABRAS
 document.getElementById('archivoPalabras').addEventListener('change', function() {
     const archivo = this.files[0];
     if (!archivo) return;
@@ -484,46 +562,4 @@ document.getElementById('archivoPalabras').addEventListener('change', function()
                 const datos = JSON.parse(e.target.result);
                 palabrasActuales = Array.isArray(datos) ? datos : datos.palabras || [];
             } else {
-                palabrasActuales = e.target.result.split(/[\n,;]/).map(p => p.trim().toLowerCase()).filter(p => p);
-            }
-            if (palabrasActuales.length < 4) throw new Error('Mínimo 4 palabras');
-            document.getElementById('estadoPalabras').textContent = `✅ ${palabrasActuales.length} palabras cargadas`;
-            document.getElementById('estadoPalabras').className = 'estado ok';
-            document.getElementById('estadoPalabras').style.display = 'block';
-            generarNuevo();
-        } catch (err) {
-            alert(`Error: ${err.message}`);
-        }
-    };
-    lector.readAsText(archivo);
-});
-
-const reproductor = document.getElementById('reproductor');
-const btnPlay = document.getElementById('btnPlay');
-const btnLoop = document.getElementById('btnLoop');
-
-document.getElementById('archivoAudio').addEventListener('change', function() {
-    const archivo = this.files[0];
-    if (!archivo) return;
-    const url = URL.createObjectURL(archivo);
-    reproductor.src = url;
-    btnPlay.disabled = false;
-});
-
-btnPlay.addEventListener('click', () => {
-    if (reproductor.paused) {
-        reproductor.play();
-        btnPlay.textContent = '⏸';
-    } else {
-        reproductor.pause();
-        btnPlay.textContent = '▶';
-    }
-});
-
-btnLoop.addEventListener('click', () => {
-    reproductor.loop = !reproductor.loop;
-    btnLoop.classList.toggle('activo', reproductor.loop);
-});
-</script>
-</body>
-</html>
+                
