@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador Rap - Base con Palabras</title>
+    <title>Generador Rap - Versión Corregida</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +25,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .logo {
@@ -48,12 +48,40 @@
             cursor: pointer;
         }
 
+        /* 📂 CARGADORES */
+        .cargador {
+            background: #111;
+            border: 2px dashed #ff8c00;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        .cargador.activo { background: #1b150a; border-style: solid; }
+        .cargador h4 { color: #ff8c00; margin-bottom: 8px; font-size: 16px; }
+        .cargador p { color: #888; font-size: 13px; margin-bottom: 12px; }
+        input[type="file"] { display: none; }
+        .btn-subir {
+            background: #ff8c00;
+            color: #000;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .btn-subir:hover { background: #ffaa33; }
+        .estado { margin-top: 10px; font-size: 13px; display: none; }
+        .estado.ok { color: #4ade80; }
+        .estado.error { color: #f87171; }
+
         .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
-
         .tab {
             flex: 1;
             padding: 15px;
@@ -64,37 +92,27 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             text-align: left;
         }
-
         .tab.active {
             background: #111;
             color: #ff8c00;
             box-shadow: 0 0 0 2px #ff8c00;
         }
-
-        .tab small {
-            display: block;
-            font-weight: normal;
-            font-size: 13px;
-            margin-top: 4px;
-            color: #666;
-        }
-
+        .tab small { display: block; font-size: 12px; margin-top: 4px; color: #666; }
         .tab.active small { color: #ffb766; }
 
         .bloque-palabras {
             background: #111;
             border-radius: 16px;
             padding: 40px 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 2px solid #ff8c00;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
         }
-
         .palabra {
             background: #1a1a1a;
             border-radius: 12px;
@@ -109,85 +127,60 @@
 
         .btn-generar {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border-radius: 12px;
             border: none;
             background: #ff8c00;
             color: #000;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             cursor: pointer;
             transition: all 0.2s;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
+        .btn-generar:hover { background: #ffaa33; transform: translateY(-2px); }
 
-        .btn-generar:hover {
-            background: #ffaa33;
-            transform: translateY(-2px);
-        }
-
+        /* 🎵 REPRODUCTOR CORREGIDO */
         .reproductor {
             background: #1a1a1a;
             border-radius: 16px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-
         .reprod-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
         }
-
         .play-btn {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border-radius: 12px;
             background: #332211;
             border: none;
             color: #ff8c00;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
+            transition: 0.2s;
         }
-
-        .bpm {
-            font-size: 18px;
-            font-weight: 600;
-            color: #ff8c00;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .tipo-base {
-            font-size: 16px;
-            color: #aaa;
-            text-align: right;
-            font-weight: 600;
-        }
-
-        .tiempo {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #777;
-            margin: 10px 0;
-        }
-
+        .play-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .play-btn:hover { background: #443322; }
+        .bpm { font-size: 16px; font-weight: 600; color: #ff8c00; }
+        .tipo-base { font-size: 15px; color: #aaa; font-weight: 600; }
+        .tiempo { display: flex; justify-content: space-between; font-size: 13px; color: #777; margin: 8px 0; }
         .barra-progreso {
             width: 100%;
             height: 6px;
             background: #222;
             border-radius: 3px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             overflow: hidden;
+            cursor: pointer;
         }
-
-        .progreso { height: 100%; width: 0%; background: #ff8c00; }
-
+        .progreso { height: 100%; width: 0%; background: #ff8c00; transition: width 0.1s; }
         .volumen {
-            width: 75%;
+            width: 70%;
             height: 6px;
             background: #333;
             border-radius: 3px;
@@ -195,56 +188,51 @@
             -webkit-appearance: none;
             margin-right: 10px;
         }
-
         .volumen::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #ff8c00;
             cursor: pointer;
         }
-
         .loop-btn {
             float: right;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 8px;
             border: 1px solid #ff8c00;
             background: #221808;
             color: #ff8c00;
             font-weight: 600;
             cursor: pointer;
+            font-size: 14px;
         }
+        .loop-btn.activo { background: #ff8c00; color: #000; }
 
+        /* SECCIONES DE OPCIONES */
         .seccion {
             background: #111;
             border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
         }
-
-        .seccion h3 {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
+        .seccion h3 { font-size: 20px; margin-bottom: 15px; color: #fff; }
         .opcion {
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
             background: #1a1a1a;
             cursor: pointer;
             transition: all 0.2s;
+            border: 1px solid transparent;
         }
-
         .opcion:last-child { margin-bottom: 0; }
         .opcion.activa {
             background: #2b1d0d;
-            border: 1px solid #ff8c00;
+            border-color: #ff8c00;
             color: #ff8c00;
         }
-        .opcion small { display: block; color: #888; margin-top: 5px; }
+        .opcion small { display: block; color: #888; margin-top: 5px; font-size: 13px; }
         .opcion.activa small { color: #ffb766; }
     </style>
 </head>
@@ -255,12 +243,30 @@
     <button class="menu-btn">☰</button>
 </div>
 
+<!-- 📂 CARGA DE PALABRAS -->
+<div class="cargador" id="zonaPalabras">
+    <h4>📂 CARGAR BASE DE PALABRAS</h4>
+    <p>Sube archivo .txt o .json</p>
+    <input type="file" id="archivoPalabras" accept=".txt,.json">
+    <label for="archivoPalabras" class="btn-subir">SELECCIONAR PALABRAS</label>
+    <div class="estado" id="estadoPalabras"></div>
+</div>
+
+<!-- 🎵 CARGA DE TU BASE DE AUDIO -->
+<div class="cargador" id="zonaAudio">
+    <h4>🎵 CARGAR TU BASE / CANCIÓN</h4>
+    <p>Sube .mp3, .wav, .ogg</p>
+    <input type="file" id="archivoAudio" accept=".mp3,.wav,.ogg">
+    <label for="archivoAudio" class="btn-subir">SELECCIONAR AUDIO</label>
+    <div class="estado" id="estadoAudio"></div>
+</div>
+
 <div class="tabs">
     <button class="tab active">
         PALABRAS<br>ALEATORIAS
-        <small>Base de rap con palabras</small>
+        <small>Mezcladas al azar</small>
     </button>
-    <button class="tab">Base de rap con<br>palabras</button>
+    <button class="tab">BASE CON<br>RIMAS</button>
 </div>
 
 <div class="bloque-palabras" id="bloquePalabras">
@@ -274,23 +280,30 @@
 
 <div class="reproductor">
     <div class="reprod-top">
-        <button class="play-btn">▶</button>
-        <span class="bpm">🎵 90 BPM</span>
-        <div class="tipo-base">BOOM BAP</div>
+        <button class="play-btn" id="btnPlay" disabled>▶</button>
+        <span class="bpm" id="txtBpm">🎵 -- BPM</span>
+        <div class="tipo-base" id="txtTipo">SIN BASE</div>
     </div>
-    <div class="barra-progreso"><div class="progreso"></div></div>
-    <div class="tiempo"><span>0:00</span><span>1:04</span></div>
-    <input type="range" class="volumen" min="0" max="100" value="70">
-    <button class="loop-btn">🔁 Loop</button>
+    <div class="barra-progreso" id="barraProgreso">
+        <div class="progreso" id="progreso"></div>
+    </div>
+    <div class="tiempo">
+        <span id="tiempoActual">0:00</span>
+        <span id="tiempoTotal">0:00</span>
+    </div>
+    <input type="range" class="volumen" min="0" max="100" value="70" id="volumen">
+    <button class="loop-btn" id="btnLoop">🔁 Loop</button>
+    <!-- AUDIO OCULTO -->
+    <audio id="reproductor" preload="metadata">
 </div>
 
 <div class="seccion">
     <h3>MODO</h3>
-    <div class="opcion activa" onclick="cambiarModo('aleatorio', this)">
+    <div class="opcion activa" data-modo="aleatorio">
         🎲 Aleatorias
         <small>4 palabras mezcladas</small>
     </div>
-    <div class="opcion" onclick="cambiarModo('rimas', this)">
+    <div class="opcion" data-modo="rimas">
         🎵 Que riman entre sí
         <small>4 palabras con la misma rima</small>
     </div>
@@ -298,126 +311,181 @@
 
 <div class="seccion">
     <h3>FORMATO</h3>
-    <div class="opcion activa" onclick="cambiarFormato(this)">📦 Bloque de 4 palabras</div>
-    <div class="opcion" onclick="cambiarFormato(this)">🥁 Cambio cada 4 compases</div>
-    <div class="opcion" onclick="cambiarFormato(this)">🎤 Usa una palabra por compás</div>
+    <div class="opcion activa" data-formato="bloque">📦 Bloque de 4 palabras</div>
+    <div class="opcion" data-formato="compases">🥁 Cambio cada 4 compases</div>
+    <div class="opcion" data-formato="unapor">🎤 Una palabra por compás</div>
 </div>
 
 <script>
-// 📚 BASE AMPLIA: +250 palabras variadas
-const palabrasAleatorias = [
-    // Emociones y sentimientos
-    "amor", "dolor", "calma", "fuerza", "miedo", "paz", "ira", "ternura", "llanto", "risa",
-    "esperanza", "desaliento", "fe", "duda", "certeza", "tristeza", "alegría", "melancolía",
-    "pasión", "indiferencia", "nostalgia", "orgullo", "culpa", "anhelo", "desamor", "ternura",
-    // Vida y camino
-    "camino", "destino", "senda", "meta", "origen", "final", "paso", "huella", "rastro", "lugar",
-    "mundo", "universo", "vida", "existencia", "tiempo", "hora", "instante", "eterno", "breve",
-    "presente", "pasado", "futuro", "ahora", "ayer", "mañana", "viaje", "partida", "llegada",
-    // Espacio y elementos
-    "viento", "lluvia", "fuego", "hielo", "tierra", "mar", "cielo", "nube", "luz", "sombra",
-    "oscuridad", "amanecer", "atardecer", "noche", "día", "estrella", "luna", "sol", "rayo", "niebla",
-    "montaña", "valle", "río", "desierto", "calle", "barrio", "ciudad", "hogar", "esquina", "muro",
-    // Mente y alma
-    "alma", "mente", "corazón", "espíritu", "instinto", "razón", "sueño", "pesadilla", "idea", "pensamiento",
-    "recuerdo", "olvido", "imaginación", "verdad", "mentira", "sabiduría", "locura", "conciencia", "silencio",
-    "grito", "voz", "palabra", "mensaje", "secreto", "confesión", "pregunta", "respuesta", "duda", "certeza",
-    // Fronteras y debilidad (como tus letras)
-    "papel", "cristal", "cartón", "vidrio", "fragil", "sólido", "roto", "entero", "caída", "salto",
-    "derrumbado", "erguido", "cadena", "libertad", "prisión", "vínculo", "distancia", "cercanía", "ausencia",
-    "presencia", "soledad", "compañía", "abismo", "orilla", "frontera", "límite", "sin fin", "infinito",
-    // Acción y lucha
-    "lucha", "guerra", "paz", "victoria", "derrota", "esfuerzo", "descanso", "trabajo", "sueño", "despertar",
-    "correr", "caminar", "quedarse", "irse", "buscar", "encontrar", "perder", "ganar", "creer", "dudar",
-    "resistir", "rendirse", "insistir", "avanzar", "retroceder", "crecer", "morir", "nacer", "cambiar",
-    // Estilo urbano / rap
-    "verso", "rima", "ritmo", "base", "compás", "micrófono", "escenario", "público", "historia", "realidad",
-    "calle", "esquina", "barrio", "gente", "ejemplo", "referencia", "camino", "lección", "aprendizaje", "maestro",
-    "discípulo", "líder", "seguidor", "lucha", "sacrificio", "éxito", "fracaso", "camino", "meta", "objetivo",
-    "plano", "proyecto", "sueño", "ambición", "desire", "necesidad", "deseo", "carencia", "riqueza", "pobreza",
-    "oro", "plata", "dinero", "valor", "precio", "costo", "ganancia", "pérdida", "tiempo", "inversión",
-    // Naturaleza y sensaciones
-    "raíz", "flor", "hoja", "árbol", "fruto", "semilla", "tierra", "polvo", "ceniza", "llama",
-    "calor", "frío", "fresco", "ardiente", "suave", "duro", "áspero", "liso", "pesado", "ligero",
-    "ruido", "sonido", "melodía", "armonía", "desorden", "caos", "orden", "estructura", "forma", "fondo"
-];
-
-// 📚 GRUPOS DE RIMAS AMPLIADOS (más de 30 grupos)
-const gruposRimas = [
-    ["amor", "dolor", "valor", "color"],
-    ["vida", "herida", "medida", "partida"],
-    ["mundo", "profundo", "segundo", "inmundo"],
-    ["lado", "pasado", "cuidado", "llegado"],
-    ["mente", "frente", "gente", "presente"],
-    ["sueño", "dueño", "pequeño", "enseño"],
-    ["fuego", "juego", "luego", "ciego"],
-    ["camino", "destino", "vecino", "divino"],
-    ["calma", "alma", "palma", "llama"],
-    ["fuerza", "certeza", "tristeza", "belleza"],
-    ["silencio", "sentencio", "potencio", "comprendo"],
-    ["abismo", "mismo", "optimismo", "esquema"],
-    ["tiempo", "ejemplo", "campo", "lamento"],
-    ["viento", "momento", "aliento", "pensamiento"],
-    ["luz", "voz", "cruz", "voz"],
-    ["sombra", "nombre", "hombre", "sangre"],
-    ["muro", "futuro", "duro", "seguro"],
-    ["lluvia", "vía", "guía", "melancolía"],
-    ["estrella", "huella", "querella", "bella"],
-    ["noche", "día", "fe", "vía"],
-    ["calle", "detalle", "falle", "talle"],
-    ["corazón", "pasión", "razón", "misión"],
-    ["libertad", "verdad", "edad", "voluntad"],
-    ["senda", "leyenda", "descendencia", "entendencia"],
-    ["rastro", "bastante", "instante", "delante"],
-    ["fragil", "util", "senil", "gentil"],
-    ["papel", "cruel", "nivel", "revés"],
-    ["cristal", "mal", "real", "mortal"],
-    ["cartón", "pasión", "razón", "canción"],
-    ["vidrio", "riesgo", "fuego", "juego"],
-    ["caída", "herida", "medida", "partida"],
-    ["salida", "ida", "vida", "medida"],
-    ["llanto", "encanto", "manto", "espanto"],
-    ["grito", "maldito", "infinito", "contrito"],
-    ["canto", "tanto", "manto", "espanto"],
-    ["aliento", "siento", "cuento", "lamento"]
-];
-
+// ==============================================
+// 1. SOLUCIÓN A LOS BOTONES DE SELECCIÓN
+// ==============================================
 let modoActual = 'aleatorio';
+let formatoActual = 'bloque';
 
+// MODO: Selección única
+document.querySelectorAll('[data-modo]').forEach(boton => {
+    boton.addEventListener('click', () => {
+        // Quitar activo de todos
+        document.querySelectorAll('[data-modo]').forEach(b => b.classList.remove('activa'));
+        // Poner activo al seleccionado
+        boton.classList.add('activa');
+        modoActual = boton.dataset.modo;
+        generarNuevo();
+    });
+});
+
+// FORMATO: Selección única
+document.querySelectorAll('[data-formato]').forEach(boton => {
+    boton.addEventListener('click', () => {
+        document.querySelectorAll('[data-formato]').forEach(b => b.classList.remove('activa'));
+        boton.classList.add('activa');
+        formatoActual = boton.dataset.formato;
+    });
+});
+
+// ==============================================
+// 2. BASE DE PALABRAS Y CARGA DE ARCHIVO
+// ==============================================
+let palabrasActuales = ["amor", "dolor", "camino", "destino", "fuego", "viento", "papel", "cristal", "cartón", "silencio", "grito", "alma"];
+let gruposRimas = [
+    ["amor", "dolor", "valor", "color"], ["vida", "herida", "medida", "partida"],
+    ["camino", "destino", "vecino", "divino"], ["calma", "alma", "palma", "llama"]
+];
+
+// Cargar archivo de palabras
+const inputPalabras = document.getElementById('archivoPalabras');
+const estadoPalabras = document.getElementById('estadoPalabras');
+inputPalabras.addEventListener('change', () => {
+    const archivo = inputPalabras.files[0];
+    if (!archivo) return;
+    const lector = new FileReader();
+    lector.onload = e => {
+        try {
+            if (archivo.name.endsWith('.json')) {
+                const datos = JSON.parse(e.target.result);
+                palabrasActuales = Array.isArray(datos) ? datos : datos.palabras || [];
+            } else {
+                palabrasActuales = e.target.result.split(/[\n,;]/).map(p => p.trim().toLowerCase()).filter(p => p);
+            }
+            if (palabrasActuales.length < 4) throw new Error('Mínimo 4 palabras');
+            estadoPalabras.textContent = `✅ ${palabrasActuales.length} palabras cargadas`;
+            estadoPalabras.className = 'estado ok';
+            estadoPalabras.style.display = 'block';
+            generarNuevo();
+        } catch (err) {
+            estadoPalabras.textContent = `❌ ${err.message}`;
+            estadoPalabras.className = 'estado error';
+            estadoPalabras.style.display = 'block';
+        }
+    };
+    lector.readAsText(archivo);
+});
+
+// ==============================================
+// 3. CARGA Y REPRODUCCIÓN DE TU AUDIO / CANCIÓN
+// ==============================================
+const inputAudio = document.getElementById('archivoAudio');
+const reproductor = document.getElementById('reproductor');
+const btnPlay = document.getElementById('btnPlay');
+const estadoAudio = document.getElementById('estadoAudio');
+const btnLoop = document.getElementById('btnLoop');
+const barraProgreso = document.getElementById('barraProgreso');
+const progreso = document.getElementById('progreso');
+const tiempoActual = document.getElementById('tiempoActual');
+const tiempoTotal = document.getElementById('tiempoTotal');
+const volumen = document.getElementById('volumen');
+
+// Cargar tu archivo de audio
+inputAudio.addEventListener('change', () => {
+    const archivo = inputAudio.files[0];
+    if (!archivo) return;
+    if (!archivo.type.startsWith('audio/')) {
+        estadoAudio.textContent = '❌ Selecciona un archivo de audio válido';
+        estadoAudio.className = 'estado error';
+        estadoAudio.style.display = 'block';
+        return;
+    }
+    const url = URL.createObjectURL(archivo);
+    reproductor.src = url;
+    estadoAudio.textContent = `✅ Base cargada: ${archivo.name}`;
+    estadoAudio.className = 'estado ok';
+    estadoAudio.style.display = 'block';
+    btnPlay.disabled = false;
+    document.getElementById('txtTipo').textContent = 'TU BASE';
+    // Intentar detectar BPM aproximado
+    document.getElementById('txtBpm').textContent = '🎵 BPM variable';
+});
+
+// Botón Play/Pause
+btnPlay.addEventListener('click', () => {
+    if (reproductor.paused) {
+        reproductor.play();
+        btnPlay.textContent = '⏸';
+    } else {
+        reproductor.pause();
+        btnPlay.textContent = '▶';
+    }
+});
+
+// Botón Loop
+btnLoop.addEventListener('click', () => {
+    reproductor.loop = !reproductor.loop;
+    btnLoop.classList.toggle('activo', reproductor.loop);
+});
+
+// Volumen
+volumen.addEventListener('input', () => {
+    reproductor.volume = volumen.value / 100;
+});
+
+// Barra de progreso y tiempo
+reproductor.addEventListener('loadedmetadata', () => {
+    tiempoTotal.textContent = formatearTiempo(reproductor.duration);
+});
+reproductor.addEventListener('timeupdate', () => {
+    const porcentaje = (reproductor.currentTime / reproductor.duration) * 100;
+    progreso.style.width = porcentaje + '%';
+    tiempoActual.textContent = formatearTiempo(reproductor.currentTime);
+});
+barraProgreso.addEventListener('click', e => {
+    const rect = barraProgreso.getBoundingClientRect();
+    const porcentaje = (e.clientX - rect.left) / rect.width;
+    reproductor.currentTime = porcentaje * reproductor.duration;
+});
+reproductor.addEventListener('ended', () => {
+    btnPlay.textContent = '▶';
+});
+
+function formatearTiempo(segundos) {
+    const m = Math.floor(segundos / 60);
+    const s = Math.floor(segundos % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// ==============================================
+// GENERADOR DE PALABRAS
+// ==============================================
 function generarNuevo() {
-    let nuevasPalabras = [];
+    let nuevas = [];
     if (modoActual === 'aleatorio') {
-        while (nuevasPalabras.length < 4) {
-            const p = palabrasAleatorias[Math.floor(Math.random() * palabrasAleatorias.length)];
-            if (!nuevasPalabras.includes(p)) nuevasPalabras.push(p);
+        while (nuevas.length < 4) {
+            const p = palabrasActuales[Math.floor(Math.random() * palabrasActuales.length)];
+            if (!nuevas.includes(p)) nuevas.push(p);
         }
     } else {
         const grupo = gruposRimas[Math.floor(Math.random() * gruposRimas.length)];
-        nuevasPalabras = [...grupo];
-        nuevasPalabras.sort(() => Math.random() - 0.5);
+        nuevas = [...grupo].sort(() => Math.random() - 0.5);
     }
-
     const ids = ['p1', 'p2', 'p3', 'p4'];
     ids.forEach((id, i) => {
         const el = document.getElementById(id);
         el.style.opacity = 0;
         setTimeout(() => {
-            el.textContent = nuevasPalabras[i];
+            el.textContent = nuevas[i];
             el.style.opacity = 1;
         }, 200);
     });
-}
-
-function cambiarModo(modo, elemento) {
-    modoActual = modo;
-    document.querySelectorAll('.seccion:nth-child(7) .opcion').forEach(el => el.classList.remove('activa'));
-    elemento.classList.add('activa');
-    generarNuevo();
-}
-
-function cambiarFormato(elemento) {
-    document.querySelectorAll('.seccion:nth-child(8) .opcion').forEach(el => el.classList.remove('activa'));
-    elemento.classList.add('activa');
 }
 </script>
 </body>
