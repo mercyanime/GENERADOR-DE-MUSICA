@@ -3,133 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎤 Generador Palabras Freestyle</title>
+    <title>Generador Rap - Base con Palabras</title>
     <style>
-        * {box-sizing: border-box; margin:0; padding:0; font-family: Arial, sans-serif;}
-        body {background:#121212; color:#fff; padding:20px; text-align:center; max-width:700px; margin:0 auto;}
-        h1 {color:#f59e0b; margin-bottom:25px; font-size:1.8rem;}
-        .caja-palabras {display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:30px 0;}
-        .palabra {background:#1e1e1e; border:2px solid #f59e0b; padding:15px 20px; border-radius:10px; font-size:1.4rem; font-weight:bold; color:#f59e0b; min-width:110px;}
-        button {background:#f59e0b; color:#000; border:none; padding:15px 30px; font-size:1.1rem; font-weight:bold; border-radius:8px; cursor:pointer; transition:0.2s;}
-        button:hover {background:#d97706; transform:scale(1.03);}
-        .info {margin-top:20px; color:#aaa; font-size:0.95rem;}
-        audio {width:100%; margin:20px 0; border-radius:8px;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #ff8c00;
+        }
+
+        .menu-btn {
+            font-size: 28px;
+            color: #ff8c00;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            background: #1a1a1a;
+            color: #888;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .tab.active {
+            background: #111;
+            color: #ff8c00;
+            box-shadow: 0 0 0 2px #ff8c00;
+        }
+
+        .tab small {
+            display: block;
+            font-weight: normal;
+            font-size: 13px;
+            margin-top: 4px;
+            color: #666;
+        }
+
+        .tab.active small { color: #ffb766; }
+
+        .bloque-palabras {
+            background: #111;
+            border-radius: 16px;
+            padding: 40px 20px;
+            margin-bottom: 25px;
+            border: 2px solid #ff8c00;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .palabra {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: #ff8c00;
+            text-transform: capitalize;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-generar {
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            border: none;
+            background: #ff8c00;
+            color: #000;
+            font-size: 22px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+        }
+
+        .btn-generar:hover {
+            background: #ffaa33;
+            transform: translateY(-2px);
+        }
+
+        .reproductor {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .reprod-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: #332211;
+            border: none;
+            color: #ff8c00;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .bpm {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ff8c00;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tipo-base {
+            font-size: 16px;
+            color: #aaa;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .tiempo {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #777;
+            margin: 10px 0;
+        }
+
+        .barra-progreso {
+            width: 100%;
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progreso { height: 100%; width: 0%; background: #ff8c00; }
+
+        .volumen {
+            width: 75%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            margin-right: 10px;
+        }
+
+        .volumen::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff8c00;
+            cursor: pointer;
+        }
+
+        .loop-btn {
+            float: right;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid #ff8c00;
+            background: #221808;
+            color: #ff8c00;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .seccion {
+            background: #111;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .seccion h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .opcion {
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #1a1a1a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .opcion:last-child { margin-bottom: 0; }
+        .opcion.activa {
+            background: #2b1d0d;
+            border: 1px solid #ff8c00;
+            color: #ff8c00;
+        }
+        .opcion small { display: block; color: #888; margin-top: 5px; }
+        .opcion.activa small { color: #ffb766; }
     </style>
 </head>
 <body>
 
-<h1>🔥 ENTRENADOR DE FREESTYLE</h1>
+<div class="header">
+    <div class="logo">🎤</div>
+    <button class="menu-btn">☰</button>
+</div>
 
-<!-- Reproductor de beat -->
-<audio controls>
-    <source src="tu-beat.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
+<div class="tabs">
+    <button class="tab active">
+        PALABRAS<br>ALEATORIAS
+        <small>Base de rap con palabras</small>
+    </button>
+    <button class="tab">Base de rap con<br>palabras</button>
+</div>
 
+<div class="bloque-palabras" id="bloquePalabras">
+    <div class="palabra" id="p1">secreto</div>
+    <div class="palabra" id="p2">tiempo</div>
+    <div class="palabra" id="p3">instinto</div>
+    <div class="palabra" id="p4">viento</div>
+</div>
 
-<!-- Palabras generadas -->
-<div class="caja-palabras" id="caja"></div>
+<button class="btn-generar" onclick="generarNuevo()">🔄 GENERAR NUEVO BLOQUE</button>
 
-<!-- Botón -->
-<button onclick="generar()">🔄 NUEVO BLOQUE</button>
+<div class="reproductor">
+    <div class="reprod-top">
+        <button class="play-btn">▶</button>
+        <span class="bpm">🎵 90 BPM</span>
+        <div class="tipo-base">BOOM BAP</div>
+    </div>
+    <div class="barra-progreso"><div class="progreso"></div></div>
+    <div class="tiempo"><span>0:00</span><span>1:04</span></div>
+    <input type="range" class="volumen" min="0" max="100" value="70">
+    <button class="loop-btn">🔁 Loop</button>
+</div>
 
-<div class="info">Más de 1000 palabras fáciles para rimar 🎤</div>
+<div class="seccion">
+    <h3>MODO</h3>
+    <div class="opcion activa" onclick="cambiarModo('aleatorio', this)">
+        🎲 Aleatorias
+        <small>4 palabras mezcladas</small>
+    </div>
+    <div class="opcion" onclick="cambiarModo('rimas', this)">
+        🎵 Que riman entre sí
+        <small>4 palabras con la misma rima</small>
+    </div>
+</div>
+
+<div class="seccion">
+    <h3>FORMATO</h3>
+    <div class="opcion activa" onclick="cambiarFormato(this)">📦 Bloque de 4 palabras</div>
+    <div class="opcion" onclick="cambiarFormato(this)">🥁 Cambio cada 4 compases</div>
+    <div class="opcion" onclick="cambiarFormato(this)">🎤 Usa una palabra por compás</div>
+</div>
 
 <script>
-// MÁS DE 1000 PALABRAS FÁCILES, IGUAL QUE ANTES
-const PALABRAS = [
-"hacer","decir","ir","ver","dar","saber","querer","llegar","pasar","deber",
-"poner","parecer","quedar","resultar","hablar","llevar","dejar","seguir","encontrar","llamar",
-"trabajar","vivir","sentir","intentar","conseguir","comenzar","terminar","servir","saltar","correr",
-"caminar","bailar","cantar","reír","llorar","soñar","pensar","creer","dudar","esperar",
-"luchar","pelear","ganar","perder","subir","bajar","entrar","salir","abrir","cerrar",
-"romper","arreglar","crear","destruir","ayudar","apoyar","defender","atacar","escapar","quedar",
-"mirar","escuchar","leer","escribir","aprender","enseñar","jugar","descansar","comer","beber",
-"dormir","despertar","levantar","caer","volar","nadar","conducir","manejar","empujar","tirar",
-"agarrar","soltar","sostener","mover","marcharse","regresar","volver","partir","buscar","olvidar",
-"recordar","imaginar","razonar","gustar","odiar","amar","aceptar","rechazar","invitar","visitar",
-"viajar","parar","arrancar","frenar","acelerar","girar","doblar","cruzar","atravesar","brincar",
-"trepar","escalar","descender","ascender","lanzar","recoger","guardar","sacar","meter","traer",
-"enviar","recibir","comprar","vender","pagar","cobrar","prestar","pedir","donar","regalar",
-"tomar","usar","utilizar","probar","ensayar","practicar","estudiar","repasar","explicar","contar",
-"narrar","relatar","mencionar","nombrar",
-
-"luz","sol","luna","estrella","cielo","nube","lluvia","viento","fuego","tierra",
-"agua","mar","río","lago","montaña","valle","bosque","camino","puente","calle",
-"casa","puerta","ventana","techo","suelo","pared","silla","mesa","cama","libro",
-"papel","pluma","lápiz","hoja","dinero","oro","plata","cobre","piedra","arena",
-"flor","árbol","fruto","semilla","raíz","rama","pájaro","pez","animal","perro",
-"gato","caballo","león","oso","lobo","águila","serpiente","tigre","vaca","cerdo",
-"oveja","gallina","pato","abeja","hormiga","mosca","araña","ratón","conejo","zorro",
-"espada","escudo","casco","flecha","arco","lanza","cuchillo","botella","vaso","taza",
-"ropa","zapato","sombrero","camisa","pantalón","abrigo","guante","mochila","bolsa","caja",
-"llave","cerrojo","candado","cadena","cuerda","nudo","red","malla","barco","coche",
-"avión","tren","bicicleta","rueda","motor","llanta","faro","lámpara","hoguera","linterna",
-"pueblo","ciudad","país","mundo","planeta","universo","callejón","plaza","parque","jardín",
-"escuela","colegio","universidad","hospital","iglesia","templo","castillo","torre","muralla","foso",
-"escalera","pasillo","habitación","salón","cocina","baño","sótano","ático","bolígrafo","cuaderno",
-"goma","regla","tijera","pegamento","carpeta","libreta","mapa","reloj","calendario","agenda",
-"teléfono","celular","computadora","pantalla","teclado","ratón","altavoz",
-
-"amor","odio","paz","guerra","alegría","tristeza","miedo","valor","fuerza","debilidad",
-"calor","frío","oscuro","claro","alto","bajo","largo","corto","ancho","estrecho",
-"rápido","lento","fácil","difícil","bueno","malo","grande","pequeño","nuevo","viejo",
-"joven","adulto","niño","hombre","mujer","persona","amigo","enemigo","familia","hermano",
-"madre","padre","hijo","hija","abuelo","abuela","tío","tía","primo","prima",
-"libre","esclavo","rico","pobre","feliz","triste","enojado","calmado","tímido","valiente",
-"sabio","tonto","inteligente","loco","cuerdo","sano","enfermo","débil","bonito","feo",
-"lindo","hermoso","sucio","limpio","seco","mojado","duro","blando","pesado","ligero",
-"lleno","vacío","cerca","lejos","dentro","fuera","arriba","abajo","antes","después",
-"ahora","siempre","nunca","mucho","poco","bastante","nada","todo","algo","tranquilo",
-"nervioso","ansioso","seguro","dudoso","firme","leal","traidor","sincero","falso","veraz",
-"mentiroso","humilde","orgulloso","generoso","tacaño","cobarde",
-
-"vida","muerte","tiempo","espacio","momento","año","mes","día","hora","minuto",
-"segundo","pasado","presente","futuro","origen","fin","principio","meta","destino","suerte",
-"razón","locura","verdad","mentira","sueño","realidad","magia","misterio","secreto","historia",
-"leyenda","mito","cuento","poema","canto","melodía","ritmo","sonido","silencio","voz",
-"palabra","frase","verso","rima","estrofa","coro","fama","gloria","honor","éxito",
-"fracaso","victoria","derrota","poder","autoridad","derecho","deber","justicia","libertad","unión",
-"división","unidad","grupo","equipo","banda","pueblo","nación","patria","hogar","rincón",
-"esquina","centro","frontera","límite","muro","barrera","ruta","viaje","aventura","batalla",
-"acción","pasión","visión","misión","lección","canción","emoción","corazón","región","religión",
-"mentira","herida","partida","llegada","entrada","salida","caída","subida","huida","medida",
-"fuego","juego","luego","ciego","ruego","nuevo","lluevo","dolor","color","valor",
-"error","temor","pavor","sabor","labor","favor","rigor","luz","cruz","voz",
-"vez","pez","mes","tres","diez","juez","fe","mar","par","estar",
-"lugar","amar","sanar","ganar","llorar","orar","cielo","suelo","hielo","desvelo",
-"modelo","anhelo","duelo","consuelo","revuelo","velo","tierra","guerra","sierra","feria",
-"miseria","espera","fiera","era","materia","carrera","fuerza","certeza","belleza","tristeza",
-"pereza","riqueza","pobreza","dureza","bajeza","nobleza","camino","divino","vecino","pino",
-"vino","signo","diseño","ensueño","tierno","eterno","tempestad","cicatriz","rapto","frenesí",
-"impulso","brillo","destello","resplandor","sombrío",
-
-"abajo","acá","allá","allí","alrededor","apenas","aquí","atrás","aún","bien",
-"casi","cómo","cuándo","cuánto","dónde","mal","más","menos","muy","pronto",
-"tanto","temprano","tarde","ahí","entonces","mientras","uno","dos","cuatro","cinco",
-"seis","siete","ocho","nueve","primero","segundo","tercero","cuarto","quinto","sexto",
-"séptimo","octavo","noveno","décimo","blanco","negro","rojo","azul","verde","amarillo",
-"naranja","morado","gris","marrón","ante","bajo","con","contra","desde","entre",
-"hacia","hasta","para","por","según","sin","sobre","tras","durante","él",
-"ella","ello","nosotros","vosotros","ellos","ellas","tú","yo","usted","mío",
-"tuyo","suyo","nuestro","vuestro","propio","ajeno","mismo","otro","tal","demasiado",
-"igual","medio","suficiente","nadie","alguien","quienquiera","cualquiera","cada","ambos","ninguno",
-"alguno","varios","resto","mitad","parte","encima","debajo","detrás","delante","enfrente",
-"junto","separado","unido"
+// 📚 BASE AMPLIA: +250 palabras variadas
+const palabrasAleatorias = [
+    // Emociones y sentimientos
+    "amor", "dolor", "calma", "fuerza", "miedo", "paz", "ira", "ternura", "llanto", "risa",
+    "esperanza", "desaliento", "fe", "duda", "certeza", "tristeza", "alegría", "melancolía",
+    "pasión", "indiferencia", "nostalgia", "orgullo", "culpa", "anhelo", "desamor", "ternura",
+    // Vida y camino
+    "camino", "destino", "senda", "meta", "origen", "final", "paso", "huella", "rastro", "lugar",
+    "mundo", "universo", "vida", "existencia", "tiempo", "hora", "instante", "eterno", "breve",
+    "presente", "pasado", "futuro", "ahora", "ayer", "mañana", "viaje", "partida", "llegada",
+    // Espacio y elementos
+    "viento", "lluvia", "fuego", "hielo", "tierra", "mar", "cielo", "nube", "luz", "sombra",
+    "oscuridad", "amanecer", "atardecer", "noche", "día", "estrella", "luna", "sol", "rayo", "niebla",
+    "montaña", "valle", "río", "desierto", "calle", "barrio", "ciudad", "hogar", "esquina", "muro",
+    // Mente y alma
+    "alma", "mente", "corazón", "espíritu", "instinto", "razón", "sueño", "pesadilla", "idea", "pensamiento",
+    "recuerdo", "olvido", "imaginación", "verdad", "mentira", "sabiduría", "locura", "conciencia", "silencio",
+    "grito", "voz", "palabra", "mensaje", "secreto", "confesión", "pregunta", "respuesta", "duda", "certeza",
+    // Fronteras y debilidad (como tus letras)
+    "papel", "cristal", "cartón", "vidrio", "fragil", "sólido", "roto", "entero", "caída", "salto",
+    "derrumbado", "erguido", "cadena", "libertad", "prisión", "vínculo", "distancia", "cercanía", "ausencia",
+    "presencia", "soledad", "compañía", "abismo", "orilla", "frontera", "límite", "sin fin", "infinito",
+    // Acción y lucha
+    "lucha", "guerra", "paz", "victoria", "derrota", "esfuerzo", "descanso", "trabajo", "sueño", "despertar",
+    "correr", "caminar", "quedarse", "irse", "buscar", "encontrar", "perder", "ganar", "creer", "dudar",
+    "resistir", "rendirse", "insistir", "avanzar", "retroceder", "crecer", "morir", "nacer", "cambiar",
+    // Estilo urbano / rap
+    "verso", "rima", "ritmo", "base", "compás", "micrófono", "escenario", "público", "historia", "realidad",
+    "calle", "esquina", "barrio", "gente", "ejemplo", "referencia", "camino", "lección", "aprendizaje", "maestro",
+    "discípulo", "líder", "seguidor", "lucha", "sacrificio", "éxito", "fracaso", "camino", "meta", "objetivo",
+    "plano", "proyecto", "sueño", "ambición", "desire", "necesidad", "deseo", "carencia", "riqueza", "pobreza",
+    "oro", "plata", "dinero", "valor", "precio", "costo", "ganancia", "pérdida", "tiempo", "inversión",
+    // Naturaleza y sensaciones
+    "raíz", "flor", "hoja", "árbol", "fruto", "semilla", "tierra", "polvo", "ceniza", "llama",
+    "calor", "frío", "fresco", "ardiente", "suave", "duro", "áspero", "liso", "pesado", "ligero",
+    "ruido", "sonido", "melodía", "armonía", "desorden", "caos", "orden", "estructura", "forma", "fondo"
 ];
 
-// GENERAR 4 PALABRAS AL AZAR
-function generar(){
-    const caja = document.getElementById("caja");
-    const seleccionadas = [];
-    while(seleccionadas.length < 4){
-        const palabra = PALABRAS[Math.floor(Math.random() * PALABRAS.length)];
-        if(!seleccionadas.includes(palabra)) seleccionadas.push(palabra);
+// 📚 GRUPOS DE RIMAS AMPLIADOS (más de 30 grupos)
+const gruposRimas = [
+    ["amor", "dolor", "valor", "color"],
+    ["vida", "herida", "medida", "partida"],
+    ["mundo", "profundo", "segundo", "inmundo"],
+    ["lado", "pasado", "cuidado", "llegado"],
+    ["mente", "frente", "gente", "presente"],
+    ["sueño", "dueño", "pequeño", "enseño"],
+    ["fuego", "juego", "luego", "ciego"],
+    ["camino", "destino", "vecino", "divino"],
+    ["calma", "alma", "palma", "llama"],
+    ["fuerza", "certeza", "tristeza", "belleza"],
+    ["silencio", "sentencio", "potencio", "comprendo"],
+    ["abismo", "mismo", "optimismo", "esquema"],
+    ["tiempo", "ejemplo", "campo", "lamento"],
+    ["viento", "momento", "aliento", "pensamiento"],
+    ["luz", "voz", "cruz", "voz"],
+    ["sombra", "nombre", "hombre", "sangre"],
+    ["muro", "futuro", "duro", "seguro"],
+    ["lluvia", "vía", "guía", "melancolía"],
+    ["estrella", "huella", "querella", "bella"],
+    ["noche", "día", "fe", "vía"],
+    ["calle", "detalle", "falle", "talle"],
+    ["corazón", "pasión", "razón", "misión"],
+    ["libertad", "verdad", "edad", "voluntad"],
+    ["senda", "leyenda", "descendencia", "entendencia"],
+    ["rastro", "bastante", "instante", "delante"],
+    ["fragil", "util", "senil", "gentil"],
+    ["papel", "cruel", "nivel", "revés"],
+    ["cristal", "mal", "real", "mortal"],
+    ["cartón", "pasión", "razón", "canción"],
+    ["vidrio", "riesgo", "fuego", "juego"],
+    ["caída", "herida", "medida", "partida"],
+    ["salida", "ida", "vida", "medida"],
+    ["llanto", "encanto", "manto", "espanto"],
+    ["grito", "maldito", "infinito", "contrito"],
+    ["canto", "tanto", "manto", "espanto"],
+    ["aliento", "siento", "cuento", "lamento"]
+];
+
+let modoActual = 'aleatorio';
+
+function generarNuevo() {
+    let nuevasPalabras = [];
+    if (modoActual === 'aleatorio') {
+        while (nuevasPalabras.length < 4) {
+            const p = palabrasAleatorias[Math.floor(Math.random() * palabrasAleatorias.length)];
+            if (!nuevasPalabras.includes(p)) nuevasPalabras.push(p);
+        }
+    } else {
+        const grupo = gruposRimas[Math.floor(Math.random() * gruposRimas.length)];
+        nuevasPalabras = [...grupo];
+        nuevasPalabras.sort(() => Math.random() - 0.5);
     }
-    caja.innerHTML = seleccionadas.map(p => `<div class="palabra">${p}</div>`).join("");
+
+    const ids = ['p1', 'p2', 'p3', 'p4'];
+    ids.forEach((id, i) => {
+        const el = document.getElementById(id);
+        el.style.opacity = 0;
+        setTimeout(() => {
+            el.textContent = nuevasPalabras[i];
+            el.style.opacity = 1;
+        }, 200);
+    });
 }
 
-// CARGAR AL INICIO
-generar();
+function cambiarModo(modo, elemento) {
+    modoActual = modo;
+    document.querySelectorAll('.seccion:nth-child(7) .opcion').forEach(el => el.classList.remove('activa'));
+    elemento.classList.add('activa');
+    generarNuevo();
+}
+
+function cambiarFormato(elemento) {
+    document.querySelectorAll('.seccion:nth-child(8) .opcion').forEach(el => el.classList.remove('activa'));
+    elemento.classList.add('activa');
+}
 </script>
 </body>
 </html>
