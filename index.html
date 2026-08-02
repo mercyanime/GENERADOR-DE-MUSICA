@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagen a Video - Gratis y Funcional</title>
+    <title>Imagen a Video - Sin Registro</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background: #0f172a; color: white; max-width: 850px; margin: 30px auto; padding: 0 20px; }
@@ -18,8 +18,8 @@
 
         textarea { width: 100%; min-height: 140px; padding: 12px; background: #334155; border: none; border-radius: 8px; color: white; font-size: 15px; resize: vertical; }
         
-        button { width: 100%; padding: 14px; background: #0ea5e9; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #0284c7; }
+        button { width: 100%; padding: 14px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        button:hover { background: #059669; }
         button:disabled { background: #475569; cursor: not-allowed; }
 
         .aviso { margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; }
@@ -28,7 +28,7 @@
 </head>
 <body>
 
-<h1>🎬 Genera Video desde tu Imagen</h1>
+<h1>🎬 Imagen a Video - Totalmente Gratis</h1>
 
 <div class="caja">
     <label>📷 Sube tu imagen:</label>
@@ -38,12 +38,12 @@
 
 <div class="caja">
     <label>✍️ Escribe cómo quieres el video:</label>
-    <textarea id="textoPrompt" placeholder="Ej: movimiento lento de cámara, estilo película, video de 6 segundos, atmósfera triste..."></textarea>
+    <textarea id="textoPrompt" placeholder="Ej: movimiento suave de cámara, atmósfera melancólica, video corto, estilo realista..."></textarea>
 </div>
 
-<button id="btnGenerar">✨ Ir a Generar (Gratis)</button>
+<button id="btnGenerar">✨ Crear Video (Sin cuenta)</button>
 <div class="aviso" id="estado"></div>
-<p class="info">🔹 Al pulsar se abre una herramienta gratuita que funciona hoy. Solo sube tu imagen y pega tu texto, sin registro ni pagos.</p>
+<p class="info">🔹 No necesitas registrarte, no hay límites de invitado. Solo sube tu imagen y usa tu texto.</p>
 
 <script>
 const entrada = document.getElementById('imagenEntrada');
@@ -63,7 +63,7 @@ entrada.addEventListener('change', e => {
     lector.readAsDataURL(arch);
 });
 
-// Acción corregida
+// Acción con herramienta sin registro
 boton.addEventListener('click', () => {
     if(!entrada.files[0]) {
         estado.textContent = "⚠️ Primero sube una imagen";
@@ -80,12 +80,10 @@ boton.addEventListener('click', () => {
     estado.textContent = "🔄 Abriendo herramienta...";
     estado.style.background = '#164e63';
 
-    // Usamos herramientas activas y gratuitas:
     setTimeout(() => {
-        // Opción 1: Hugging Face (versión estable)
-        window.open('https://huggingface.co/spaces/ByteDance/AnimateDiff-Lightning', '_blank');
-        // Opción 2: si prefieres otra, cambia por: https://huggingface.co/spaces/Kwai-Kolors/Kolors-Video
-        estado.innerHTML = `✅ Herramienta abierta! <br> Tu instrucción guardada: <br> <i>"${prompt.value}"</i> <br> Sube tu imagen y pega el texto ahí, es gratis y funciona.`;
+        // Herramienta gratuita, sin registro ni límites de invitado
+        window.open('https://huggingface.co/spaces/Kwai-Kolors/Kolors-Video', '_blank');
+        estado.innerHTML = `✅ Herramienta lista! <br> Tu instrucción guardada: <br> <i>"${prompt.value}"</i> <br> Sube tu imagen y pega el texto, no pide cuenta.`;
         estado.style.background = '#166534';
         boton.disabled = false;
     }, 1000);
