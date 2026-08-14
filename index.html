@@ -17,25 +17,25 @@
             background-color: #000000;
             min-height: 100vh;
             position: relative;
-            padding-bottom: 110px;
+            padding-bottom: 130px;
         }
 
-        /* 🟢 USUARIOS - MÁS GRANDE */
+        /* 🟢 USUARIOS */
         .estado {
             position: absolute;
             top: 25px;
             left: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-family: 'Press Start 2P', sans-serif;
-            font-size: 18px;
+            font-size: 14px;
             color: #ff2b2b;
         }
 
         .punto {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background: #34c759;
             border-radius: 50%;
             animation: parpadeo 1.2s infinite ease-in-out;
@@ -47,19 +47,19 @@
             100% { opacity: 1; }
         }
 
-        /* 🎮 BOTÓN CENTRAL - MÁS GRANDE */
+        /* 🎮 BOTÓN CENTRAL - TAMAÑO ORIGINAL */
         .boton-principal {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 35px 70px;
+            padding: 25px 50px;
             font-family: 'Press Start 2P', sans-serif;
-            font-size: 36px;
+            font-size: 28px;
             color: #ff2b2b;
             background: transparent;
-            border: 4px solid #ff2b2b;
-            border-radius: 10px;
+            border: 3px solid #ff2b2b;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -68,27 +68,27 @@
         .boton-principal:hover {
             background: #ff2b2b;
             color: #000;
-            box-shadow: 0 0 25px #ff2b2b;
+            box-shadow: 0 0 20px #ff2b2b;
         }
 
         /* 🔢 VERSIÓN */
         .version {
             position: absolute;
-            bottom: 140px;
+            bottom: 150px;
             left: 50%;
             transform: translateX(-50%);
             font-family: Arial, sans-serif;
-            font-size: 18px;
+            font-size: 16px;
             color: #444;
         }
 
-        /* 🧭 BARRA - MUCHO MÁS GRANDE */
+        /* 🧭 BARRA DE NAVEGACIÓN - MUCHO MÁS GRANDE */
         .navegacion {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 110px;
+            height: 120px; /* Solo aumenta la barra */
             background: #0a0a0a;
             display: flex;
             justify-content: space-evenly;
@@ -98,7 +98,7 @@
 
         .item {
             font-family: Arial, sans-serif;
-            font-size: 22px;
+            font-size: 24px; /* Letra de la barra más grande */
             font-weight: bold;
             color: #777;
             cursor: pointer;
@@ -111,10 +111,10 @@
         }
 
         @media (max-width: 480px) {
-            .estado { font-size: 14px; }
-            .boton-principal { font-size: 24px; padding: 25px 45px; }
-            .navegacion { height: 100px; }
-            .item { font-size: 18px; }
+            .estado { font-size: 11px; }
+            .boton-principal { font-size: 20px; padding: 20px 40px; }
+            .navegacion { height: 110px; }
+            .item { font-size: 20px; }
         }
     </style>
 </head>
@@ -140,7 +140,6 @@
     </div>
 
     <script>
-        // Aquí conectarás tus usuarios reales cuando tengas servidor
         function actualizarUsuariosReales() {
             document.getElementById('contador').textContent = "0";
         }
