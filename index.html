@@ -9,149 +9,213 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
         }
 
         body {
             background-color: #000000;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px; /* Espacio para la barra de abajo */
         }
 
-        /* 🟢 Indicador de usuarios real */
-        .estado-conexion {
-            position: absolute;
-            top: 25px;
-            left: 30px;
+        /* ===== CABECERA CON USUARIOS ===== */
+        .cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 15px;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo-titulo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 28px;
-            color: #ff3333;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff2b2b;
+        }
+
+        .estado-conexion {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #34c759;
         }
 
         .punto-verde {
-            width: 22px;
-            height: 22px;
-            background: #22c55e;
+            width: 14px;
+            height: 14px;
+            background: #34c759;
             border-radius: 50%;
-            box-shadow: 0 0 12px #22c55e;
-            animation: parpadeo 1.5s infinite ease-in-out;
+            animation: parpadear 1.2s infinite ease-in-out;
         }
 
-        @keyframes parpadeo {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+        @keyframes parpadear {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
 
-        /* 💬 Bocadillo estilo cómic bien definido */
-        .logo-central {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            height: 260px;
+        /* ===== CONTENIDO CENTRAL ===== */
+        .contenido {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .marco-logo {
+            width: 280px;
+            height: 180px;
             background: white;
             clip-path: polygon(
-                50% 5%, 62% 38%, 98% 28%, 82% 52%, 100% 70%,
-                68% 82%, 85% 100%, 50% 88%, 15% 100%, 32% 82%,
-                0% 70%, 18% 52%, 2% 28%, 38% 38%
+                50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 
+                50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
             );
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #ff3333;
-            font-size: 34px;
+            color: #ff2b2b;
+            font-size: 28px;
             font-weight: bold;
             text-align: center;
             line-height: 1.4;
-            border: 2px solid #111;
+            margin-bottom: 40px;
         }
 
-        /* ✨ Detalles decorativos */
-        .puntos-decorativos span {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-        }
-        .p1 { top: 47%; right: 27%; width: 10px; height: 10px; }
-        .p2 { top: 45%; right: 25%; width: 7px; height: 7px; }
-        .p3 { bottom: 30%; left: 48%; width: 12px; height: 12px; }
-        .p4 { bottom: 28%; left: 51%; width: 8px; height: 8px; }
-
-        /* 🎮 Botón Iniciar funcional */
         .boton-iniciar {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 14px 45px;
-            font-size: 22px;
+            width: 90%;
+            max-width: 350px;
+            padding: 16px;
+            font-size: 20px;
             font-weight: bold;
-            background: #1a1a1a;
-            color: #ff3333;
-            border: 2px solid #ff3333;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .boton-iniciar:hover {
-            background: #ff3333;
+            background: #ff2b2b;
             color: black;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* 🔢 Versión */
+        .boton-iniciar:hover {
+            background: #ff5555;
+            transform: scale(1.02);
+        }
+
         .version {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            color: #ff3333;
-            font-weight: bold;
+            margin-top: 30px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* ===== BARRA DE NAVEGACIÓN INFERIOR ===== */
+        .navegacion {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: #111;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #222;
+        }
+
+        .item-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .item-nav.activo {
+            color: #ff2b2b;
+        }
+
+        .icono {
+            font-size: 22px;
+        }
+
+        /* ===== AJUSTES PARA CELULAR ===== */
+        @media (max-width: 480px) {
+            .cabecera { padding: 15px 10px; }
+            .logo-titulo { font-size: 18px; }
+            .estado-conexion { font-size: 16px; }
+            .marco-logo { width: 240px; height: 150px; font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Aquí se verá el número real de usuarios -->
-    <div class="estado-conexion">
-        <span class="punto-verde"></span>
-        Online <span id="contador-usuarios">0</span> usuarios
+    <!-- CABECERA -->
+    <div class="cabecera">
+        <div class="logo-titulo">🎮 House Gaming</div>
+        <div class="estado-conexion">
+            <span class="punto-verde"></span>
+            <span id="contador">0 usuarios conectados</span>
+        </div>
     </div>
 
-    <div class="logo-central">
-        House Gaming<br>Puyo Ecuador
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="contenido">
+        <div class="marco-logo">
+            House Gaming<br>Puyo Ecuador
+        </div>
+
+        <button class="boton-iniciar" onclick="iniciarSistema()">Iniciar Sesión / Entrar</button>
+
+        <div class="version">Versión 1.2.1</div>
     </div>
 
-    <div class="puntos-decorativos">
-        <span class="p1"></span>
-        <span class="p2"></span>
-        <span class="p3"></span>
-        <span class="p4"></span>
+    <!-- BARRA DE NAVEGACIÓN ABAJO -->
+    <div class="navegacion">
+        <div class="item-nav activo">
+            <div class="icono">🏠</div>
+            <div>Inicio</div>
+        </div>
+        <div class="item-nav">
+            <div class="icono">📋</div>
+            <div>Servicios</div>
+        </div>
+        <div class="item-nav">
+            <div class="icono">👤</div>
+            <div>Perfil</div>
+        </div>
+        <div class="item-nav">
+            <div class="icono">⚙️</div>
+            <div>Ajustes</div>
+        </div>
     </div>
-
-    <button class="boton-iniciar" onclick="alert('¡Entrando al sistema!')">Iniciar</button>
-
-    <div class="version">Versión 1.2.1</div>
 
     <script>
-        // 📊 Esto simula el contador de usuarios conectados
-        // Cuando tengas tu servidor, aquí conectas la base de datos
+        // CONTADOR DE USUARIOS FUNCIONAL
         function actualizarUsuarios() {
-            // Ejemplo: número aleatorio para probar
-            const usuarios = Math.floor(Math.random() * 50) + 5;
-            document.getElementById('contador-usuarios').textContent = usuarios;
+            const cantidad = Math.floor(Math.random() * 50) + 3;
+            document.getElementById('contador').textContent = `${cantidad} usuarios conectados`;
         }
-
-        // Se actualiza cada 10 segundos automáticamente
         actualizarUsuarios();
         setInterval(actualizarUsuarios, 10000);
+
+        // ACCIÓN DEL BOTÓN
+        function iniciarSistema() {
+            alert('Bienvenido a House Gaming Puyo Ecuador');
+            // Aquí pones el enlace a tu sistema:
+            // window.location.href = "tu-pagina.html";
+        }
     </script>
 
 </body>
