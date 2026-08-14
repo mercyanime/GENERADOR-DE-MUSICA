@@ -17,10 +17,10 @@
             background-color: #000000;
             min-height: 100vh;
             position: relative;
-            padding-bottom: 90px; /* Espacio para barra más grande */
+            padding-bottom: 95px;
         }
 
-        /* 🟢 ARRIBA: USUARIOS CONECTADOS */
+        /* 🟢 USUARIOS CONECTADOS */
         .estado {
             position: absolute;
             top: 25px;
@@ -74,7 +74,7 @@
         /* 🔢 VERSIÓN */
         .version {
             position: absolute;
-            bottom: 110px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
             font-family: Arial, sans-serif;
@@ -82,13 +82,13 @@
             color: #444;
         }
 
-        /* 🧭 BARRA DE NAVEGACIÓN AHORA MÁS GRANDE Y VISIBLE */
+        /* 🧭 BARRA DE NAVEGACIÓN AJUSTADA */
         .navegacion {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 85px; /* Más alta */
+            height: 90px; /* Un poquito más grande */
             background: #0a0a0a;
             display: flex;
             justify-content: space-evenly;
@@ -98,8 +98,8 @@
 
         .item {
             font-family: Arial, sans-serif;
-            font-size: 18px; /* Letra más grande */
-            font-weight: bold; /* Más gruesa */
+            font-size: 19px; /* Letra un poco más grande */
+            font-weight: bold;
             color: #777;
             cursor: pointer;
             transition: color 0.2s;
@@ -114,8 +114,8 @@
         @media (max-width: 480px) {
             .estado { font-size: 11px; }
             .boton-principal { font-size: 18px; padding: 20px 35px; }
-            .navegacion { height: 80px; }
-            .item { font-size: 16px; }
+            .navegacion { height: 85px; }
+            .item { font-size: 15px; }
         }
     </style>
 </head>
@@ -133,10 +133,11 @@
     <div class="version">Versión 1.2.1</div>
 
     <div class="navegacion">
+        <div class="item">Clash Royale</div>
+        <div class="item">Servicios</div>
         <div class="item activo">Inicio</div>
-        <div class="item">Servidores</div>
-        <div class="item">Tienda</div>
-        <div class="item">Soporte</div>
+        <div class="item">Juegos</div>
+        <div class="item">Archivos</div>
     </div>
 
     <script>
