@@ -3,92 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagen a Video - Sin Registro</title>
+    <title>Mi Página</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background: #0f172a; color: white; max-width: 850px; margin: 30px auto; padding: 0 20px; }
-        h1 { text-align: center; color: #38bdf8; margin-bottom: 25px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
 
-        .caja { background: #1e293b; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #7dd3fc; }
-        
-        input[type="file"] { width: 100%; padding: 10px; background: #334155; border-radius: 8px; margin-bottom: 15px; }
-        .vista-previa { width: 100%; min-height: 220px; background: #334155; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .vista-previa img { max-width: 100%; max-height: 400px; }
+        body {
+            background-color: #000;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        textarea { width: 100%; min-height: 140px; padding: 12px; background: #334155; border: none; border-radius: 8px; color: white; font-size: 15px; resize: vertical; }
-        
-        button { width: 100%; padding: 14px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #059669; }
-        button:disabled { background: #475569; cursor: not-allowed; }
+        .cuadro-centro {
+            background-color: #1a1a1a;
+            width: 200px;
+            padding: 30px 15px;
+            border-radius: 10px;
+            text-align: center;
+            color: #fff;
+            border: 1px solid #333;
+        }
 
-        .aviso { margin-top: 15px; padding: 12px; border-radius: 8px; text-align: center; font-size: 14px; }
-        .info { color: #94a3b8; font-size: 13px; margin-top: 8px; line-height: 1.5; }
+        .arriba {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .enlaces {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
-<h1>🎬 Imagen a Video - Totalmente Gratis</h1>
-
-<div class="caja">
-    <label>📷 Sube tu imagen:</label>
-    <input type="file" id="imagenEntrada" accept="image/*">
-    <div class="vista-previa" id="verImagen">Aquí se verá tu imagen</div>
-</div>
-
-<div class="caja">
-    <label>✍️ Escribe cómo quieres el video:</label>
-    <textarea id="textoPrompt" placeholder="Ej: movimiento suave de cámara, atmósfera melancólica, video corto, estilo realista..."></textarea>
-</div>
-
-<button id="btnGenerar">✨ Crear Video (Sin cuenta)</button>
-<div class="aviso" id="estado"></div>
-<p class="info">🔹 No necesitas registrarte, no hay límites de invitado. Solo sube tu imagen y usa tu texto.</p>
-
-<script>
-const entrada = document.getElementById('imagenEntrada');
-const vista = document.getElementById('verImagen');
-const prompt = document.getElementById('textoPrompt');
-const boton = document.getElementById('btnGenerar');
-const estado = document.getElementById('estado');
-
-// Vista previa de la imagen
-entrada.addEventListener('change', e => {
-    const arch = e.target.files[0];
-    if(!arch) return;
-    const lector = new FileReader();
-    lector.onload = e => {
-        vista.innerHTML = `<img src="${e.target.result}" alt="Imagen lista">`;
-    };
-    lector.readAsDataURL(arch);
-});
-
-// Acción con herramienta sin registro
-boton.addEventListener('click', () => {
-    if(!entrada.files[0]) {
-        estado.textContent = "⚠️ Primero sube una imagen";
-        estado.style.background = '#991b1b';
-        return;
-    }
-    if(!prompt.value.trim()) {
-        estado.textContent = "⚠️ Escribe qué quieres hacer";
-        estado.style.background = '#991b1b';
-        return;
-    }
-
-    boton.disabled = true;
-    estado.textContent = "🔄 Abriendo herramienta...";
-    estado.style.background = '#164e63';
-
-    setTimeout(() => {
-        // Herramienta gratuita, sin registro ni límites de invitado
-        window.open('https://huggingface.co/spaces/Kwai-Kolors/Kolors-Video', '_blank');
-        estado.innerHTML = `✅ Herramienta lista! <br> Tu instrucción guardada: <br> <i>"${prompt.value}"</i> <br> Sube tu imagen y pega el texto, no pide cuenta.`;
-        estado.style.background = '#166534';
-        boton.disabled = false;
-    }, 1000);
-});
-</script>
+    <div class="cuadro-centro">
+        <div class="arriba">Online [Cantidad de users]</div>
+        <div class="enlaces">
+            <div>Inicio</div>
+            <div>Versión. 1.2.1</div>
+        </div>
+    </div>
 
 </body>
 </html>
