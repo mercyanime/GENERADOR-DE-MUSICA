@@ -19,40 +19,57 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .cuadro-centro {
-            background-color: #1a1a1a;
-            width: 200px;
-            padding: 30px 15px;
-            border-radius: 10px;
+            background-color: #111;
+            width: 220px;
+            padding: 35px 20px;
+            border-radius: 12px;
             text-align: center;
             color: #fff;
             border: 1px solid #333;
         }
 
-        .arriba {
-            font-size: 18px;
-            margin-bottom: 40px;
+        .estado-online {
+            font-size: 17px;
+            margin-bottom: 45px;
         }
 
-        .enlaces {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .boton-iniciar {
+            padding: 12px 30px;
             font-size: 16px;
+            background-color: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .boton-iniciar:hover {
+            background-color: #333;
+            border-color: #555;
+        }
+
+        .version {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            color: #777;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
     <div class="cuadro-centro">
-        <div class="arriba">Online [Cantidad de users]</div>
-        <div class="enlaces">
-            <div>Inicio</div>
-            <div>Versión. 1.2.1</div>
-        </div>
+        <div class="estado-online">Online 🟢 [Cantidad de users]</div>
+        <button class="boton-iniciar">Iniciar</button>
     </div>
+
+    <div class="version">Versión. 1.2.1</div>
 
 </body>
 </html>
