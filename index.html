@@ -17,7 +17,7 @@
             background-color: #000000;
             min-height: 100vh;
             position: relative;
-            padding-bottom: 70px;
+            padding-bottom: 90px; /* Espacio para barra más grande */
         }
 
         /* 🟢 ARRIBA: USUARIOS CONECTADOS */
@@ -47,7 +47,7 @@
             100% { opacity: 1; }
         }
 
-        /* 🎮 BOTÓN CENTRAL ESTILO GAMING */
+        /* 🎮 BOTÓN CENTRAL */
         .boton-principal {
             position: absolute;
             top: 50%;
@@ -74,7 +74,7 @@
         /* 🔢 VERSIÓN */
         .version {
             position: absolute;
-            bottom: 90px;
+            bottom: 110px;
             left: 50%;
             transform: translateX(-50%);
             font-family: Arial, sans-serif;
@@ -82,23 +82,24 @@
             color: #444;
         }
 
-        /* 🧭 BARRA DE NAVEGACIÓN LIMPIA */
+        /* 🧭 BARRA DE NAVEGACIÓN AHORA MÁS GRANDE Y VISIBLE */
         .navegacion {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 65px;
+            height: 85px; /* Más alta */
             background: #0a0a0a;
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            border-top: 1px solid #222;
+            border-top: 2px solid #222;
         }
 
         .item {
             font-family: Arial, sans-serif;
-            font-size: 14px;
+            font-size: 18px; /* Letra más grande */
+            font-weight: bold; /* Más gruesa */
             color: #777;
             cursor: pointer;
             transition: color 0.2s;
@@ -106,13 +107,15 @@
 
         .item.activo {
             color: #ff2b2b;
-            font-weight: bold;
+            font-weight: 900;
         }
 
         /* AJUSTE CELULAR */
         @media (max-width: 480px) {
             .estado { font-size: 11px; }
             .boton-principal { font-size: 18px; padding: 20px 35px; }
+            .navegacion { height: 80px; }
+            .item { font-size: 16px; }
         }
     </style>
 </head>
@@ -137,9 +140,7 @@
     </div>
 
     <script>
-        // CONTADOR - AQUÍ LUEGO PONES TUS NÚMEROS REALES
         function actualizar() {
-            // Cambia esto por los datos de tu servidor cuando lo tengas
             const usuarios = Math.floor(Math.random() * 100) + 5;
             document.getElementById('contador').textContent = usuarios;
         }
@@ -148,7 +149,6 @@
 
         function entrar() {
             alert('Entrando a House Gaming...');
-            // window.location.href = "tu-pagina.html";
         }
     </script>
 
